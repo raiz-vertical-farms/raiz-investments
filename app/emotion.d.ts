@@ -2,6 +2,7 @@ import "@emotion/react";
 
 declare module "@emotion/react" {
   export interface Theme {
+    colorScheme: "light" | "dark";
     colors: {
       primary: string;
       secondary: string;

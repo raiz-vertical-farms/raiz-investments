@@ -1,4 +1,3 @@
-import { IconHeart } from "@tabler/icons-react";
 import {
   Card,
   Image,
@@ -6,13 +5,13 @@ import {
   Group,
   Badge,
   Button,
-  ActionIcon,
   createStyles,
   rem,
 } from "@mantine/core";
 import { useState } from "react";
 import { useNavigate } from "@remix-run/react";
 import type { Farm } from "~/types/Farm";
+import { QuantityInput } from "./QuantityInput";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -27,10 +26,6 @@ const useStyles = createStyles((theme) => ({
     paddingLeft: theme.spacing.md,
     paddingRight: theme.spacing.md,
     paddingBottom: theme.spacing.md,
-  },
-
-  like: {
-    color: theme.colors.red[6],
   },
 
   label: {
@@ -93,25 +88,22 @@ const FarmCard = ({ farm }: FarmCardProps) => {
       </Card.Section>
 
       <Group mt="xs">
-        <Button radius="md" style={{ flex: 1 }} onClick={handleInvest}>
-          Invest
-        </Button>
-        <ActionIcon variant="default" radius="md" size={36}>
-          <IconHeart size="1.1rem" className={classes.like} stroke={1.5} />
-        </ActionIcon>
         <div style={{ flex: 1 }}>
-          <Text align="right" fz="sm" mt="xs">
-            Invest slots:
-          </Text>
-          <input
-            type="number"
+          <QuantityInput
             min={1}
             max={slots}
             value={investSlots}
-            onChange={(event) => setInvestSlots(parseInt(event.target.value))}
-            style={{ width: "100%", marginTop: "4px" }}
+            onChange={setInvestSlots}
           />
         </div>
+        <Button
+          radius="sm"
+          style={{ flex: 1 }}
+          onClick={handleInvest}
+          variant="light"
+        >
+          Invest & Grow
+        </Button>
       </Group>
     </Card>
   );
