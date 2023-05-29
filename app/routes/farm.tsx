@@ -1,7 +1,9 @@
-// routes/farm.tsx
+import type { V2_MetaFunction } from "@remix-run/node";
 import { Container, Grid } from "@mantine/core";
 import FarmCard from "../components/FarmCard";
 import type { Farm } from "~/types/Farm";
+
+export const meta: V2_MetaFunction = () => [{ title: "Farms" }];
 
 export default function FarmRoute() {
   const farms: Farm[] = [
