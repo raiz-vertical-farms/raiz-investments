@@ -1,8 +1,4 @@
-import { cssBundleHref } from "@remix-run/css-bundle";
-import type { LinksFunction, LoaderArgs } from "@remix-run/node";
-import { ThemeProvider } from "@emotion/react";
-import { MantineProvider } from "@mantine/core";
-import { json } from "@remix-run/node";
+import type { V2_MetaFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -11,35 +7,37 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
-
-import { getUser } from "~/session.server";
-import stylesheet from "~/tailwind.css";
+import { MantineProvider, createEmotionCache } from "@mantine/core";
+import { StylesPlaceholder } from "@mantine/remix";
 import { theme, mantineThemeOverride } from "~/theme";
+import { ThemeProvider } from "@emotion/react";
 
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: stylesheet },
-  ...(cssBundleHref ? [{ rel: "stylesheet", href: cssBundleHref }] : []),
+export const meta: V2_MetaFunction = () => [
+  {
+    charset: "utf-8",
+    title: "Raiz Investments",
+    viewport: "width=device-width,initial-scale=1",
+  },
 ];
 
-export const loader = async ({ request }: LoaderArgs) => {
-  return json({ user: await getUser(request) });
-};
+createEmotionCache({ key: "mantine" });
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme as any}>
-      <MantineProvider theme={mantineThemeOverride}>
-        <html lang="en" className="h-full">
+    <ThemeProvider theme={theme}>
+      <MantineProvider
+        theme={mantineThemeOverride}
+        withGlobalStyles
+        withNormalizeCSS
+      >
+        <html lang="en">
           <head>
-            <meta charSet="utf-8" />
-            <meta
-              name="viewport"
-              content="width=device-width,initial-scale=1"
-            />
+            {/* Prevents FOUC */}
+            <StylesPlaceholder />
             <Meta />
             <Links />
           </head>
-          <body className="h-full">
+          <body>
             <Outlet />
             <ScrollRestoration />
             <Scripts />
