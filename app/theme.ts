@@ -1,5 +1,5 @@
 import tinycolor from "tinycolor2";
-import { ColorScheme } from "@mantine/core";
+import type { ColorScheme } from "@mantine/core";
 
 type _10Shades = [
   (string | undefined)?,
@@ -17,9 +17,17 @@ type _10Shades = [
 function generateShades(hexColor: string): _10Shades {
   const color = tinycolor(hexColor);
   const shades: (string | undefined)[] = [];
+  const step = 5;
 
-  for (let i = 0; i < 10; i++) {
-    const shade = color.darken(i * 5).toString();
+  for (let i = 1; i <= 5; i++) {
+    const shade = color.lighten(i * step).toString();
+    shades.push(shade);
+  }
+
+  shades.push(hexColor);
+
+  for (let i = 1; i <= 4; i++) {
+    const shade = color.darken(i * step).toString();
     shades.push(shade);
   }
 
