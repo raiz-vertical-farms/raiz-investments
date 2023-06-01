@@ -1,37 +1,25 @@
-import tinycolor from "tinycolor2";
 import type { ColorScheme } from "@mantine/core";
+import type { Color } from "chroma-js";
+import chroma from "chroma-js";
 
-type _10Shades = [
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?,
-  (string | undefined)?
+// Lightness levels for the color palette
+const LIGHTNESS_MAP: any = [
+  0.95, 0.85, 0.75, 0.65, 0.55, 0.45, 0.35, 0.25, 0.15, 0.05,
 ];
 
-function generateShades(hexColor: string): _10Shades {
-  const color = tinycolor(hexColor);
-  const shades: (string | undefined)[] = [];
-  const step = 5;
-
-  for (let i = 1; i <= 5; i++) {
-    const shade = color.lighten(i * step).toString();
-    shades.push(shade);
+// Generate a color palette from an input color code
+export function generateColorPalette(inputColorCode: string): any {
+  if (!chroma.valid(inputColorCode)) {
+    console.error(`Invalid color code: ${inputColorCode}`);
+    return null;
   }
 
-  shades.push(hexColor);
+  const inputColor: Color = chroma(inputColorCode);
+  const palette: any = LIGHTNESS_MAP.map((lightness) =>
+    inputColor.set("hsl.l", lightness).hex()
+  );
 
-  for (let i = 1; i <= 4; i++) {
-    const shade = color.darken(i * step).toString();
-    shades.push(shade);
-  }
-
-  return shades as _10Shades;
+  return palette;
 }
 
 export const theme = {
@@ -108,11 +96,11 @@ export const mantineThemeOverride = {
   white: theme.colors.white,
   black: theme.colors.black,
   colors: {
-    primary: generateShades(theme.colors.primary),
-    secondary: generateShades(theme.colors.secondary),
-    tertiary: generateShades(theme.colors.tertiary),
-    light: generateShades(theme.colors.light),
-    dark: generateShades(theme.colors.dark),
+    primary: generateColorPalette(theme.colors.primary),
+    secondary: generateColorPalette(theme.colors.secondary),
+    tertiary: generateColorPalette(theme.colors.tertiary),
+    light: generateColorPalette(theme.colors.light),
+    dark: generateColorPalette(theme.colors.dark),
   },
   primaryColor: "primary",
   defaultGradient: {

@@ -3,6 +3,7 @@ import {
   Image,
   Text,
   Group,
+  Stack,
   Badge,
   Button,
   createStyles,
@@ -82,9 +83,9 @@ const FarmCard = ({ farm }: FarmCardProps) => {
         <Text mt="md" className={classes.label} c="dimmed">
           Farm details
         </Text>
-        <Group spacing={7} mt={5}>
+        <Stack align="flex-start" justify="flex-start" spacing="xs">
           {features}
-        </Group>
+        </Stack>
       </Card.Section>
 
       <Group mt="xs">

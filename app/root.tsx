@@ -24,12 +24,12 @@ createEmotionCache({ key: "mantine" });
 
 export default function App() {
   return (
-    <ThemeProvider theme={theme}>
-      <MantineProvider
-        theme={mantineThemeOverride}
-        withGlobalStyles
-        withNormalizeCSS
-      >
+    <MantineProvider
+      theme={mantineThemeOverride}
+      withGlobalStyles
+      withNormalizeCSS
+    >
+      <ThemeProvider theme={theme}>
         <html lang="en">
           <head>
             {/* Prevents FOUC */}
@@ -44,7 +44,7 @@ export default function App() {
             <LiveReload />
           </body>
         </html>
-      </MantineProvider>
-    </ThemeProvider>
+      </ThemeProvider>
+    </MantineProvider>
   );
 }

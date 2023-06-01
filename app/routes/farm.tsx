@@ -1,6 +1,6 @@
 import type { V2_MetaFunction } from "@remix-run/node";
 import { Container, Grid } from "@mantine/core";
-import FarmCard from "../components/FarmCard";
+import FarmCard from "../components/FarmCard/FarmCard";
 import type { Farm } from "~/types/Farm";
 
 export const meta: V2_MetaFunction = () => [{ title: "Farms" }];
