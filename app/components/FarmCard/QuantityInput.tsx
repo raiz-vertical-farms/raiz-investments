@@ -52,10 +52,14 @@ interface QuantityInputProps {
   onChange(value: number): void;
 }
 
-export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
+export function QuantityInput({
+  value,
+  onChange,
+  min = 1,
+  max = 10,
+}: QuantityInputProps) {
   const { classes } = useStyles();
   const handlers = useRef<NumberInputHandlers>(null);
-  const [value, setValue] = useState<number | "">(1);
 
   return (
     <div className={classes.wrapper} style={{ minWidth: "110px" }}>
@@ -76,7 +80,7 @@ export function QuantityInput({ min = 1, max = 10 }: QuantityInputProps) {
         max={max}
         handlersRef={handlers}
         value={value}
-        onChange={setValue}
+        onChange={onChange}
         classNames={{ input: classes.input }}
       />
 

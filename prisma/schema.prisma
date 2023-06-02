@@ -36,3 +36,13 @@ model Note {
   user   User   @relation(fields: [userId], references: [id], onDelete: Cascade, onUpdate: Cascade)
   userId String
 }
+
+model Farm {
+  id           Int    @id
+  name         String @default("")
+  image        String
+  location     String
+  slots        Int
+  averageAPY   Float
+  pricePerSlot Float
+}

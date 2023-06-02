@@ -1,57 +1,29 @@
-import type { V2_MetaFunction } from "@remix-run/node";
 import { Container, Grid } from "@mantine/core";
-import FarmCard from "../components/FarmCard/FarmCard";
-import Header from "../components/Header/Header";
+import { json } from "@remix-run/node";
+import { useLoaderData } from "@remix-run/react";
 import type { Farm } from "~/types/Farm";
+import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
+
+import FarmCard from "~/components/FarmCard/FarmCard";
+import Header from "~/components/Header/Header";
+import { getFarms } from "~/models/farm.server";
 
 export const meta: V2_MetaFunction = () => [{ title: "Farms" }];
 
+export const loader = async ({ request }: LoaderArgs) => {
+  const farms = await getFarms();
+  return json({ farms });
+};
+
 export default function FarmRoute() {
-  const farms: Farm[] = [
-    {
-      image:
-        "https://www.foodbusinessnews.net/ext/resources/2022/01/25/Plenty_Lead.png?height=667&t=1643128323&width=1080",
-      id: 1,
-      location: "Location 1",
-      slots: 50,
-      averageAPY: 5,
-      pricePerSlot: 100,
-    },
-    {
-      image:
-        "https://www.foodbusinessnews.net/ext/resources/2022/01/25/Plenty_Lead.png?height=667&t=1643128323&width=1080",
-      id: 2,
-      location: "Location 2",
-      slots: 100,
-      averageAPY: 7,
-      pricePerSlot: 80,
-    },
-    {
-      image:
-        "https://www.foodbusinessnews.net/ext/resources/2022/01/25/Plenty_Lead.png?height=667&t=1643128323&width=1080",
-      id: 3,
-      location: "Location 3",
-      slots: 100,
-      averageAPY: 7,
-      pricePerSlot: 80,
-    },
-    {
-      image:
-        "https://www.foodbusinessnews.net/ext/resources/2022/01/25/Plenty_Lead.png?height=667&t=1643128323&width=1080",
-      id: 4,
-      location: "Location 4",
-      slots: 100,
-      averageAPY: 7,
-      pricePerSlot: 80,
-    },
-  ];
+  const data = useLoaderData<typeof loader>();
 
   return (
     <>
       <Header />
       <Container size="lg" my="md">
         <Grid gutter={20}>
-          {farms.map((farm: Farm) => (
+          {data.farms.map((farm: Farm) => (
             <Grid.Col xs={6} sm={4} md={3} key={farm.id}>
               <FarmCard farm={farm} />
             </Grid.Col>

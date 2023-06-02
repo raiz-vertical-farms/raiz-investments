@@ -1,4 +1,4 @@
-import type { V2_MetaFunction } from "@remix-run/node";
+import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -7,10 +7,12 @@ import {
   Scripts,
   ScrollRestoration,
 } from "@remix-run/react";
+import { json } from "@remix-run/node";
 import { MantineProvider, createEmotionCache } from "@mantine/core";
 import { StylesPlaceholder } from "@mantine/remix";
-import { theme, mantineThemeOverride } from "~/theme";
 import { ThemeProvider } from "@emotion/react";
+import { theme, mantineThemeOverride } from "~/theme";
+import { getUser } from "~/session.server";
 
 export const meta: V2_MetaFunction = () => [
   {
@@ -19,6 +21,10 @@ export const meta: V2_MetaFunction = () => [
     viewport: "width=device-width,initial-scale=1",
   },
 ];
+
+export const loader = async ({ request }: LoaderArgs) => {
+  return json({ user: await getUser(request) });
+};
 
 createEmotionCache({ key: "mantine" });
 

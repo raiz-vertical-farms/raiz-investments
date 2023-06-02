@@ -41,7 +41,7 @@ interface FarmCardProps {
 }
 
 const FarmCard = ({ farm }: FarmCardProps) => {
-  const { image, id, location, slots, averageAPY, pricePerSlot } = farm;
+  const { image, name, location, slots, averageAPY, pricePerSlot } = farm;
   const { classes, theme } = useStyles();
   const navigate = useNavigate();
   const [investSlots, setInvestSlots] = useState(1);
@@ -52,8 +52,8 @@ const FarmCard = ({ farm }: FarmCardProps) => {
 
   const features = [
     { emoji: "📍", label: location },
-    { emoji: "🌱", label: `Slots: ${slots}` },
-    { emoji: "💰", label: `Price per slot: $${pricePerSlot}` },
+    { emoji: "🌱", label: `Growing Spaces: ${slots}` },
+    { emoji: "💰", label: `Price per slot: ${pricePerSlot} €` },
     { emoji: "📈", label: `Average APY: ${averageAPY}%` },
   ].map((badge) => (
     <Badge
@@ -74,13 +74,13 @@ const FarmCard = ({ farm }: FarmCardProps) => {
       <Card.Section className={classes.section} mt="md">
         <Group position="apart">
           <Text fz="lg" fw={500}>
-            {location}
+            {name}
           </Text>
         </Group>
       </Card.Section>
 
       <Card.Section className={classes.section}>
-        <Text mt="md" className={classes.label} c="dimmed">
+        <Text my="md" className={classes.label} c="dimmed">
           Farm details
         </Text>
         <Stack align="flex-start" justify="flex-start" spacing="xs">
@@ -103,7 +103,7 @@ const FarmCard = ({ farm }: FarmCardProps) => {
           onClick={handleInvest}
           variant="filled"
         >
-          Invest & Grow
+          Invest {pricePerSlot * investSlots} €
         </Button>
       </Group>
     </Card>
