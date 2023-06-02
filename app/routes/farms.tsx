@@ -1,6 +1,7 @@
 import type { V2_MetaFunction } from "@remix-run/node";
 import { Container, Grid } from "@mantine/core";
 import FarmCard from "../components/FarmCard/FarmCard";
+import Header from "../components/Header/Header";
 import type { Farm } from "~/types/Farm";
 
 export const meta: V2_MetaFunction = () => [{ title: "Farms" }];
@@ -46,14 +47,17 @@ export default function FarmRoute() {
   ];
 
   return (
-    <Container size="lg" my="md">
-      <Grid gutter={20}>
-        {farms.map((farm: Farm) => (
-          <Grid.Col xs={6} sm={4} md={3} key={farm.id}>
-            <FarmCard farm={farm} />
-          </Grid.Col>
-        ))}
-      </Grid>
-    </Container>
+    <>
+      <Header />
+      <Container size="lg" my="md">
+        <Grid gutter={20}>
+          {farms.map((farm: Farm) => (
+            <Grid.Col xs={6} sm={4} md={3} key={farm.id}>
+              <FarmCard farm={farm} />
+            </Grid.Col>
+          ))}
+        </Grid>
+      </Container>
+    </>
   );
 }

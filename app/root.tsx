@@ -37,7 +37,7 @@ export default function App() {
             <Meta />
             <Links />
           </head>
-          <body>
+          <body style={{ minWidth: "320px" }}>
             <Outlet />
             <ScrollRestoration />
             <Scripts />

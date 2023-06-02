@@ -101,7 +101,7 @@ const FarmCard = ({ farm }: FarmCardProps) => {
           radius="sm"
           style={{ flex: 1 }}
           onClick={handleInvest}
-          variant="light"
+          variant="filled"
         >
           Invest & Grow
         </Button>
