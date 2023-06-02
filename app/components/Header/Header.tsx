@@ -1,3 +1,4 @@
+import { useEffect, useState } from 'react';
 import {
   createStyles,
   Header,
@@ -11,6 +12,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useCelo } from '@celo/react-celo';
 import Logo from "~/components/assets/Logo";
 
 const HEADER_HEIGHT = rem(60);
@@ -81,6 +83,20 @@ export default function HeaderComponent({
 }: HeaderActionProps) {
   const { classes } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
+  // Celo connection
+  let [componentInitialized, setComponentInitialized] = useState(false);
+  let {
+      initialised,
+      address,
+      connect,
+      disconnect
+  } = useCelo();
+
+  useEffect(() => {
+    if (initialised) {
+      setComponentInitialized(true);
+    }
+  }, [initialised]);
 
   const links = [
     { label: "Farms", href: "/farms" },
@@ -116,9 +132,17 @@ export default function HeaderComponent({
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
-          <Button radius={30} h={30}>
-            Connect Wallet
-          </Button>
+          {componentInitialized && address ? (
+            <Button radius={30} h={30} onClick={disconnect}>
+              Disconnect Wallet
+            </Button>
+          ) : (
+            <Button radius={30} h={30} onClick={() => 
+              connect().catch((e) => console.log((e as Error).message))
+            }>
+              Connect Wallet
+            </Button>
+          )}
         </Container>
       </Header>
       <Drawer
