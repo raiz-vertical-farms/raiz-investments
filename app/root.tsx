@@ -1,4 +1,4 @@
-import type { V2_MetaFunction } from "@remix-run/node";
+import type { V2_MetaFunction, LinksFunction } from "@remix-run/node";
 import {
   Links,
   LiveReload,
@@ -11,6 +11,14 @@ import { MantineProvider, createEmotionCache } from "@mantine/core";
 import { StylesPlaceholder } from "@mantine/remix";
 import { theme, mantineThemeOverride } from "~/theme";
 import { ThemeProvider } from "@emotion/react";
+import { CeloProvider, Alfajores } from "@celo/react-celo";
+import celoStyles from '@celo/react-celo/lib/styles.css';
+
+export const links: LinksFunction = () => {
+  return [
+    { rel: 'stylesheet', href: celoStyles }
+  ]
+}
 
 export const meta: V2_MetaFunction = () => [
   {
@@ -24,27 +32,40 @@ createEmotionCache({ key: "mantine" });
 
 export default function App() {
   return (
-    <MantineProvider
-      theme={mantineThemeOverride}
-      withGlobalStyles
-      withNormalizeCSS
+    <CeloProvider
+      dapp={{
+        name: "Raiz investments dApp",
+        description: "ReFi dApp to invest in farms",
+        url: "https://example.com", // Todo: set url
+        icon: 'https://example.com/favicon.ico', // Todo: set icon
+      }}
+      defaultNetwork={Alfajores.name}
+      connectModal={{
+        providersOptions: { searchable: true },
+      }}
     >
-      <ThemeProvider theme={theme}>
-        <html lang="en">
-          <head>
-            {/* Prevents FOUC */}
-            <StylesPlaceholder />
-            <Meta />
-            <Links />
-          </head>
-          <body style={{ minWidth: "320px" }}>
-            <Outlet />
-            <ScrollRestoration />
-            <Scripts />
-            <LiveReload />
-          </body>
-        </html>
-      </ThemeProvider>
-    </MantineProvider>
+      <MantineProvider
+        theme={mantineThemeOverride}
+        withGlobalStyles
+        withNormalizeCSS
+      >
+        <ThemeProvider theme={theme}>
+          <html lang="en">
+            <head>
+              {/* Prevents FOUC */}
+              <StylesPlaceholder />
+              <Meta />
+              <Links />
+            </head>
+            <body style={{ minWidth: "320px" }}>
+              <Outlet />
+              <ScrollRestoration />
+              <Scripts />
+              <LiveReload />
+            </body>
+          </html>
+        </ThemeProvider>
+      </MantineProvider>
+    </CeloProvider>
   );
 }
