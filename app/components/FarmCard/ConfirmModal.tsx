@@ -6,12 +6,12 @@ import {
   Modal,
   Divider,
   Space,
-  Tooltip,
   createStyles,
 } from "@mantine/core";
 import { useFetcher } from "@remix-run/react";
 import { useMediaQuery } from "@mantine/hooks";
 
+import TooltipButton from "./TooltipButton";
 import type { Farm } from "~/types/Farm";
 
 const useStyles = createStyles((theme) => ({
@@ -59,24 +59,11 @@ const FarmCard = ({
   const { averageAPY, pricePerSlot } = farm;
   const totalInvested = pricePerSlot * investSlots;
 
-  const InvestButton = (props) => {
-    const newProps = { ...props };
-    if (props.disabled) {
-      delete newProps.disabled;
-      newProps["data-disabled"] = true;
-    }
-    return (
-      <Tooltip
-        label={"Please connect your wallet first"}
-        disabled={!props.disabled}
-      >
-        <Button {...newProps} />
-      </Tooltip>
-    );
-  };
-
   const onInvest = async (walletId) => {
+    // Create investment
     const data = new FormData();
+    data.append("farmId", farm.id.toString());
+    data.append("investedSlots", investSlots.toString());
     data.append(
       "json",
       JSON.stringify({
@@ -156,23 +143,24 @@ const FarmCard = ({
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
-              {totalInvested * (1 + averageAPY / 100)}€
+              {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}€
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
         </Group>
         <Space h="xl" />
 
-        <InvestButton
+        <TooltipButton
           radius="sm"
           onClick={() => onInvest(walletId)}
           variant="filled"
           fullWidth
           disabled={!walletId}
           sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
+          disabledtooltip="Please connect your wallet first"
         >
           Invest
-        </InvestButton>
+        </TooltipButton>
         <Button radius="sm" onClick={close} variant="light" fullWidth>
           Cancel
         </Button>

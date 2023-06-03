@@ -5,15 +5,16 @@ import {
   Group,
   Stack,
   Badge,
-  Button,
   createStyles,
   rem,
 } from "@mantine/core";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import type { Farm } from "~/types/Farm";
+
 import QuantityInput from "./QuantityInput";
 import ConfirmModal from "./ConfirmModal";
+import TooltipButton from "./TooltipButton";
+import type { Farm } from "~/types/Farm";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -117,14 +118,17 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
               onChange={setInvestSlots}
             />
           </div>
-          <Button
+          <TooltipButton
             radius="sm"
             style={{ flex: 1 }}
             onClick={open}
             variant="filled"
+            disabled={slots < investSlots}
+            sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
+            disabledtooltip="Not enough slots available"
           >
             Invest {pricePerSlot * investSlots} €
-          </Button>
+          </TooltipButton>
         </Group>
       </Card>
       <ConfirmModal

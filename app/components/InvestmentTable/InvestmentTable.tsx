@@ -87,7 +87,7 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
 
   return (
     <ScrollArea
-      h={300}
+      h="100%"
       w="100%"
       onScrollPositionChange={({ y }) => setScrolled(y !== 0)}
     >

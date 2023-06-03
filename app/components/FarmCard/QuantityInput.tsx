@@ -88,7 +88,7 @@ export default function QuantityInput({
         size={28}
         variant="transparent"
         onClick={() => handlers.current?.increment()}
-        disabled={value === max}
+        disabled={value >= max}
         className={classes.control}
         onMouseDown={(event) => event.preventDefault()}
       >
