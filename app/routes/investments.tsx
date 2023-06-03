@@ -2,11 +2,9 @@ import { Container, Grid, Text, Button, Stack } from "@mantine/core";
 import { createStyles } from "@mantine/styles";
 import { json } from "@remix-run/node";
 import { useLoaderData, useNavigate } from "@remix-run/react";
-import { parseISO } from "date-fns";
 import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
 
 import Header from "~/components/Header/Header";
-import InvestmentCard from "~/components/InvestmentCard/InvestmentCard";
 import InvestmentTable from "~/components/InvestmentTable/InvestmentTable";
 import { getInvestments } from "~/models/investment.server";
 

@@ -1,4 +1,3 @@
-import { redirect } from "@remix-run/node";
 import type { ActionArgs } from "@remix-run/node";
 
 import { unstakeInvestment } from "~/models/investment.server";
