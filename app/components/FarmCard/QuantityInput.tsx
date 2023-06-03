@@ -52,7 +52,7 @@ interface QuantityInputProps {
   onChange(value: number): void;
 }
 
-export function QuantityInput({
+export default function QuantityInput({
   value,
   onChange,
   min = 1,

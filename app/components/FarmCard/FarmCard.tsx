@@ -10,9 +10,11 @@ import {
   rem,
 } from "@mantine/core";
 import { useState } from "react";
+import { useDisclosure } from "@mantine/hooks";
 import { useNavigate } from "@remix-run/react";
 import type { Farm } from "~/types/Farm";
-import { QuantityInput } from "./QuantityInput";
+import QuantityInput from "./QuantityInput";
+import ConfirmModal from "./ConfirmModal";
 
 const useStyles = createStyles((theme) => ({
   card: {
@@ -34,6 +36,27 @@ const useStyles = createStyles((theme) => ({
     fontSize: theme.fontSizes.xs,
     fontWeight: 700,
   },
+  wrappedLabel: {
+    maxWidth: "70px",
+    textAlign: "center",
+    fontSize: theme.fontSizes.xs,
+    color: theme.colors.gray[7],
+    fontWeight: 500,
+  },
+  bigLabel: {
+    fontSize: theme.fontSizes.xxxl,
+    lineHeight: theme.fontSizes.xxxl,
+    fontWeight: 800,
+  },
+  secondaryBigLabel: {
+    fontSize: theme.fontSizes.xxl,
+    lineHeight: theme.fontSizes.xxxl,
+    fontWeight: 800,
+    color: theme.colors.gray[7],
+  },
+  divider: {
+    width: "100%",
+  },
 }));
 
 interface FarmCardProps {
@@ -45,10 +68,7 @@ const FarmCard = ({ farm }: FarmCardProps) => {
   const { classes, theme } = useStyles();
   const navigate = useNavigate();
   const [investSlots, setInvestSlots] = useState(1);
-
-  const handleInvest = () => {
-    navigate(`/invest/${location}/${investSlots}`);
-  };
+  const [opened, { open, close }] = useDisclosure(false);
 
   const features = [
     { emoji: "📍", label: location },
@@ -66,47 +86,55 @@ const FarmCard = ({ farm }: FarmCardProps) => {
   ));
 
   return (
-    <Card withBorder radius="md" p="md" className={classes.card}>
-      <Card.Section>
-        <Image src={image} alt={location} height={180} />
-      </Card.Section>
+    <>
+      <Card withBorder radius="md" p="md" className={classes.card}>
+        <Card.Section>
+          <Image src={image} alt={location} height={180} />
+        </Card.Section>
 
-      <Card.Section className={classes.section} mt="md">
-        <Group position="apart">
-          <Text fz="lg" fw={500}>
-            {name}
+        <Card.Section className={classes.section} mt="md">
+          <Group position="apart">
+            <Text fz="lg" fw={500}>
+              {name}
+            </Text>
+          </Group>
+        </Card.Section>
+
+        <Card.Section className={classes.section}>
+          <Text my="md" className={classes.label} c="dimmed">
+            Farm details
           </Text>
+          <Stack align="flex-start" justify="flex-start" spacing="xs">
+            {features}
+          </Stack>
+        </Card.Section>
+
+        <Group mt="xs">
+          <div style={{ flex: 1 }}>
+            <QuantityInput
+              min={1}
+              max={slots}
+              value={investSlots}
+              onChange={setInvestSlots}
+            />
+          </div>
+          <Button
+            radius="sm"
+            style={{ flex: 1 }}
+            onClick={open}
+            variant="filled"
+          >
+            Invest {pricePerSlot * investSlots} €
+          </Button>
         </Group>
-      </Card.Section>
-
-      <Card.Section className={classes.section}>
-        <Text my="md" className={classes.label} c="dimmed">
-          Farm details
-        </Text>
-        <Stack align="flex-start" justify="flex-start" spacing="xs">
-          {features}
-        </Stack>
-      </Card.Section>
-
-      <Group mt="xs">
-        <div style={{ flex: 1 }}>
-          <QuantityInput
-            min={1}
-            max={slots}
-            value={investSlots}
-            onChange={setInvestSlots}
-          />
-        </div>
-        <Button
-          radius="sm"
-          style={{ flex: 1 }}
-          onClick={handleInvest}
-          variant="filled"
-        >
-          Invest {pricePerSlot * investSlots} €
-        </Button>
-      </Group>
-    </Card>
+      </Card>
+      <ConfirmModal
+        farm={farm}
+        opened={opened}
+        investSlots={investSlots}
+        close={close}
+      />
+    </>
   );
 };
 

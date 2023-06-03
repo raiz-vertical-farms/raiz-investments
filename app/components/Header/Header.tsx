@@ -1,19 +1,16 @@
-import { useEffect, useState } from 'react';
 import {
   createStyles,
   Header,
   Container,
   Group,
-  Button,
   Burger,
   Drawer,
-  Divider,
   Box,
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
-import { useCelo } from '@celo/react-celo';
 import Logo from "~/components/assets/Logo";
+import WalletButton from "./WalletButton";
 
 const HEADER_HEIGHT = rem(60);
 
@@ -72,31 +69,9 @@ const useStyles = createStyles((theme) => {
   };
 });
 
-interface HeaderActionProps {
-  walletConnected?: boolean;
-  toggleWallet?: () => void;
-}
-
-export default function HeaderComponent({
-  walletConnected,
-  toggleWallet,
-}: HeaderActionProps) {
+export default function HeaderComponent() {
   const { classes } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
-  // Celo connection
-  let [componentInitialized, setComponentInitialized] = useState(false);
-  let {
-      initialised,
-      address,
-      connect,
-      disconnect
-  } = useCelo();
-
-  useEffect(() => {
-    if (initialised) {
-      setComponentInitialized(true);
-    }
-  }, [initialised]);
 
   const links = [
     { label: "Farms", href: "/farms" },
@@ -132,17 +107,7 @@ export default function HeaderComponent({
           <Group spacing={5} className={classes.links}>
             {items}
           </Group>
-          {componentInitialized && address ? (
-            <Button radius={30} h={30} onClick={disconnect}>
-              Disconnect Wallet
-            </Button>
-          ) : (
-            <Button radius={30} h={30} onClick={() => 
-              connect().catch((e) => console.log((e as Error).message))
-            }>
-              Connect Wallet
-            </Button>
-          )}
+          <WalletButton />
         </Container>
       </Header>
       <Drawer
