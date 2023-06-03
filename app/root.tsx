@@ -16,7 +16,6 @@ import { MantineProvider, createEmotionCache } from "@mantine/core";
 import { StylesPlaceholder } from "@mantine/remix";
 import { ThemeProvider } from "@emotion/react";
 import { theme, mantineThemeOverride } from "~/theme";
-import { getUser } from "~/session.server";
 import { CeloProvider, Alfajores } from "@celo/react-celo";
 import celoStyles from "@celo/react-celo/lib/styles.css";
 
@@ -31,10 +30,6 @@ export const meta: V2_MetaFunction = () => [
     viewport: "width=device-width,initial-scale=1",
   },
 ];
-
-export const loader = async ({ request }: LoaderArgs) => {
-  return json({ user: await getUser(request) });
-};
 
 createEmotionCache({ key: "mantine" });
 

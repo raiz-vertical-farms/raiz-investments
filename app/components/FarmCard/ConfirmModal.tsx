@@ -6,9 +6,12 @@ import {
   Modal,
   Divider,
   Space,
+  Tooltip,
   createStyles,
 } from "@mantine/core";
 import { useNavigate } from "@remix-run/react";
+import { createInvestment } from "~/models/investment.server";
+
 import type { Farm } from "~/types/Farm";
 
 const useStyles = createStyles((theme) => ({
@@ -37,16 +40,54 @@ const useStyles = createStyles((theme) => ({
 
 interface FarmCardProps {
   farm: Farm;
+  walletId?: string | null;
   investSlots: number;
   opened: boolean;
   close: () => void;
 }
 
-const FarmCard = ({ farm, investSlots, opened, close }: FarmCardProps) => {
-  const { classes, theme } = useStyles();
+const FarmCard = ({
+  farm,
+  walletId,
+  investSlots,
+  opened,
+  close,
+}: FarmCardProps) => {
   const navigate = useNavigate();
+  const { classes } = useStyles();
+  const { averageAPY, pricePerSlot } = farm;
+  const totalInvested = pricePerSlot * investSlots;
 
-  const { image, name, location, slots, averageAPY, pricePerSlot } = farm;
+  const InvestButton = (props) => {
+    const newProps = { ...props };
+    if (props.disabled) {
+      delete newProps.disabled;
+      newProps["data-disabled"] = true;
+    }
+    return (
+      <Tooltip
+        label={"Please connect your wallet first"}
+        disabled={!props.disabled}
+      >
+        <Button {...newProps} />
+      </Tooltip>
+    );
+  };
+
+  const onInvest = async (walletId) => {
+    await createInvestment({
+      id: undefined,
+      farmName: farm.name,
+      yieldEarned: 0,
+      dateInvested: new Date(),
+      investedAmount: totalInvested,
+      APY: averageAPY,
+      status: "active",
+      slots: investSlots,
+      walletId,
+    });
+    navigate("/investments");
+  };
 
   return (
     <Modal
@@ -78,9 +119,7 @@ const FarmCard = ({ farm, investSlots, opened, close }: FarmCardProps) => {
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>
-              {pricePerSlot * investSlots}€
-            </Text>
+            <Text className={classes.bigLabel}>{totalInvested}€</Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
         </Group>
@@ -92,9 +131,7 @@ const FarmCard = ({ farm, investSlots, opened, close }: FarmCardProps) => {
         />
         <Group align="flex-start">
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>
-              {pricePerSlot * investSlots}
-            </Text>
+            <Text className={classes.bigLabel}>{totalInvested}</Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
@@ -109,20 +146,23 @@ const FarmCard = ({ farm, investSlots, opened, close }: FarmCardProps) => {
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
-              {pricePerSlot * investSlots * (1 + averageAPY / 100)}€
+              {totalInvested * (1 + averageAPY / 100)}€
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
         </Group>
         <Space h="xl" />
-        <Button
+
+        <InvestButton
           radius="sm"
-          onClick={() => navigate("/investments")}
+          onClick={() => onInvest(walletId)}
           variant="filled"
           fullWidth
+          disabled={!walletId}
+          sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
         >
           Invest
-        </Button>
+        </InvestButton>
         <Button radius="sm" onClick={close} variant="light" fullWidth>
           Cancel
         </Button>

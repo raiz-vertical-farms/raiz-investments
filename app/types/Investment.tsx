@@ -1,10 +1,11 @@
 export interface Investment {
-  id: number;
+  id: number | undefined;
   farmName: string;
   yieldEarned: number;
-  dateInvested: string;
+  dateInvested: Date;
   investedAmount: number;
-  totalAPY: number;
+  APY: number;
   status: string;
   slots: number;
+  walletId?: string | null;
 }

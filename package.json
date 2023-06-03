@@ -45,6 +45,7 @@
     "@tabler/icons-react": "^2.20.0",
     "bcryptjs": "^2.4.3",
     "chroma-js": "^2.4.2",
+    "date-fns": "^2.30.0",
     "isbot": "^3.6.8",
     "react": "^18.2.0",
     "react-dom": "^18.2.0",

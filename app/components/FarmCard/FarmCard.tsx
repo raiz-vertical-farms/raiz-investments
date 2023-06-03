@@ -11,7 +11,6 @@ import {
 } from "@mantine/core";
 import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
-import { useNavigate } from "@remix-run/react";
 import type { Farm } from "~/types/Farm";
 import QuantityInput from "./QuantityInput";
 import ConfirmModal from "./ConfirmModal";
@@ -61,12 +60,12 @@ const useStyles = createStyles((theme) => ({
 
 interface FarmCardProps {
   farm: Farm;
+  walletId?: string | null;
 }
 
-const FarmCard = ({ farm }: FarmCardProps) => {
+const FarmCard = ({ farm, walletId }: FarmCardProps) => {
   const { image, name, location, slots, averageAPY, pricePerSlot } = farm;
   const { classes, theme } = useStyles();
-  const navigate = useNavigate();
   const [investSlots, setInvestSlots] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
 
@@ -130,6 +129,7 @@ const FarmCard = ({ farm }: FarmCardProps) => {
       </Card>
       <ConfirmModal
         farm={farm}
+        walletId={walletId}
         opened={opened}
         investSlots={investSlots}
         close={close}

@@ -64,7 +64,7 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
           Slots: <b>{investment.slots}</b>
         </Text>
         <Text mt="xs" c="dimmed" fz="xs">
-          Invested on <b>{investment.dateInvested}</b>
+          Invested on <b>{investment.dateInvested.toString()}</b>
         </Text>
       </Group>
 
@@ -95,10 +95,10 @@ export default function InvestmentCard({ investment }: InvestmentCardProps) {
         </Group>
         <Group mr="xs" spacing={0}>
           <Text size="xs" color="dimmed">
-            Total APY
+            APY
           </Text>
           <Text weight={500} size="sm">
-            {investment.totalAPY}%
+            {investment.APY}%
           </Text>
         </Group>
       </Card.Section>
