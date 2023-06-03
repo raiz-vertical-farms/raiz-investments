@@ -1,4 +1,5 @@
 .DS_Store
+wireguard.conf
 node_modules
 
 /build
