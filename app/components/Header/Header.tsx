@@ -9,6 +9,7 @@ import {
   rem,
 } from "@mantine/core";
 import { useDisclosure } from "@mantine/hooks";
+import { useNavigate, useMatch } from "@remix-run/react";
 import Logo from "~/components/assets/Logo";
 import WalletButton from "./WalletButton";
 
@@ -69,9 +70,28 @@ const useStyles = createStyles((theme) => {
   };
 });
 
+function NavLink({ href, children, ...props }) {
+  const { theme } = useStyles();
+  let match = useMatch(href);
+
+  return (
+    <a
+      style={{
+        color: match ? theme.colors.primary[7] : undefined,
+        fontWeight: match ? 700 : undefined,
+        cursor: "pointer",
+      }}
+      {...props}
+    >
+      {children}
+    </a>
+  );
+}
+
 export default function HeaderComponent() {
   const { classes } = useStyles();
   const [opened, { toggle }] = useDisclosure(false);
+  const navigate = useNavigate();
 
   const links = [
     { label: "Farms", href: "/farms" },
@@ -79,14 +99,17 @@ export default function HeaderComponent() {
   ];
 
   const items = links.map((link) => (
-    <a
+    <NavLink
       key={link.label}
       href={link.href}
       className={classes.link}
-      onClick={(event) => event.preventDefault()}
+      onClick={(event) => {
+        event.preventDefault();
+        navigate(link.href);
+      }}
     >
       {link.label}
-    </a>
+    </NavLink>
   ));
 
   return (

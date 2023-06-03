@@ -9,8 +9,8 @@ import {
   Tooltip,
   createStyles,
 } from "@mantine/core";
-import { useNavigate } from "@remix-run/react";
-import { createInvestment } from "~/models/investment.server";
+import { useFetcher } from "@remix-run/react";
+import { useMediaQuery } from "@mantine/hooks";
 
 import type { Farm } from "~/types/Farm";
 
@@ -53,8 +53,9 @@ const FarmCard = ({
   opened,
   close,
 }: FarmCardProps) => {
-  const navigate = useNavigate();
+  const fetcher = useFetcher();
   const { classes } = useStyles();
+  const isMobile = useMediaQuery("(max-width: 768px)");
   const { averageAPY, pricePerSlot } = farm;
   const totalInvested = pricePerSlot * investSlots;
 
@@ -75,18 +76,25 @@ const FarmCard = ({
   };
 
   const onInvest = async (walletId) => {
-    await createInvestment({
-      id: undefined,
-      farmName: farm.name,
-      yieldEarned: 0,
-      dateInvested: new Date(),
-      investedAmount: totalInvested,
-      APY: averageAPY,
-      status: "active",
-      slots: investSlots,
-      walletId,
+    const data = new FormData();
+    data.append(
+      "json",
+      JSON.stringify({
+        farmName: farm.name,
+        yieldEarned: 0,
+        dateInvested: new Date().toISOString(),
+        investedAmount: totalInvested,
+        APY: averageAPY,
+        status: "active",
+        slots: investSlots,
+        walletId,
+      })
+    );
+
+    fetcher.submit(data, {
+      method: "post",
+      action: "/investments/new",
     });
-    navigate("/investments");
   };
 
   return (
@@ -94,7 +102,9 @@ const FarmCard = ({
       opened={opened}
       onClose={close}
       title="Confirm Investment"
-      fullScreen
+      fullScreen={isMobile}
+      centered={!isMobile}
+      size="auto"
     >
       <Stack align="center" justify="center" spacing="xs">
         <Divider
@@ -103,7 +113,7 @@ const FarmCard = ({
           label="Costs"
           labelPosition="center"
         />
-        <Group align="flex-start">
+        <Group align="flex-start" noWrap>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>{investSlots}</Text>
             <Text className={classes.wrappedLabel}>Spaces</Text>
@@ -129,7 +139,7 @@ const FarmCard = ({
           label="Returns"
           labelPosition="center"
         />
-        <Group align="flex-start">
+        <Group align="flex-start" noWrap>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>{totalInvested}</Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>

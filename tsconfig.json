@@ -20,6 +20,7 @@
     ],
     "isolatedModules": true,
     "esModuleInterop": true,
+    "allowImportingTsExtensions": true,
     "jsx": "react-jsx",
     "module": "CommonJS",
     "moduleResolution": "node",

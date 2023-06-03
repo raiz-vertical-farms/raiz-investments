@@ -26,7 +26,7 @@ export default function FarmRoute() {
       <Container size="lg" my="md">
         <Grid gutter={20}>
           {data.farms.map((farm: Farm) => (
-            <Grid.Col xs={6} sm={4} md={3} key={farm.id}>
+            <Grid.Col xs={6} sm={4} key={farm.id}>
               <FarmCard farm={farm} walletId={address} />
             </Grid.Col>
           ))}

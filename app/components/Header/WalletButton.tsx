@@ -20,13 +20,14 @@ export default function ConnectWalletButton({
   }, [initialised]);
 
   return componentInitialized && address ? (
-    <Button radius={30} h={30} onClick={disconnect}>
+    <Button radius={30} h={30} w={160} onClick={disconnect}>
       Disconnect Wallet
     </Button>
   ) : (
     <Button
       radius={30}
       h={30}
+      w={160}
       onClick={() => connect().catch((e) => console.log((e as Error).message))}
     >
       Connect Wallet
