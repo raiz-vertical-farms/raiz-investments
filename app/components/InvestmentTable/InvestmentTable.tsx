@@ -9,6 +9,9 @@ import {
 } from "@mantine/core";
 import { useFetcher } from "@remix-run/react";
 
+import { useCelo } from '@celo/react-celo';
+import { balanceOf, withdraw, totalAssets } from "~/models/tokenizedVault.celo";
+
 import type { Investment } from "~/types/Investment";
 
 const useStyles = createStyles((theme) => ({
@@ -46,12 +49,20 @@ interface InvestmentTableProps {
 }
 
 const InvestmentTable = ({ data }: InvestmentTableProps) => {
+  const { address } = useCelo();
   const { classes, cx } = useStyles();
   const fetcher = useFetcher();
   const [scrolled, setScrolled] = useState(false);
 
-  const onUnStake = async (investmentId: number | undefined) => {
+  const onUnStake = async (investmentId: number | undefined, investmentAmount: number | undefined, investmentYieldEarned: number | undefined) => {
     if (!investmentId) return;
+    // Unstake assets from blockchain vault using vault tokens
+    const amount = Number(investmentAmount) + Number(investmentYieldEarned);
+    const tx = await withdraw(amount, address);
+
+    // Todo: validate if blockchain transaction was successful
+
+    // Unstake investment from db
     const data = new FormData();
     data.append("investmentId", investmentId.toString());
     fetcher.submit(data, {
@@ -76,7 +87,7 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
         <td>{row.yieldEarned} €</td>
         <td>
           {row.status === "active" && (
-            <Button variant="subtle" onClick={() => onUnStake(row.id)}>
+            <Button variant="subtle" onClick={() => onUnStake(row.id, row.investedAmount, row.yieldEarned)}>
               Unstake
             </Button>
           )}

@@ -1,3 +1,6 @@
+import { useState, useEffect } from "react";
+import { useCelo } from '@celo/react-celo';
+
 import {
   Card,
   Image,
@@ -8,13 +11,13 @@ import {
   createStyles,
   rem,
 } from "@mantine/core";
-import { useState } from "react";
 import { useDisclosure } from "@mantine/hooks";
 
 import QuantityInput from "./QuantityInput";
 import ConfirmModal from "./ConfirmModal";
 import TooltipButton from "./TooltipButton";
 import type { Farm } from "~/types/Farm";
+import { deposit } from "../../models/tokenizedVault.contract";
 
 const useStyles = createStyles((theme) => ({
   card: {

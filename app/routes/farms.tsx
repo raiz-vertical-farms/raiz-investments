@@ -1,9 +1,9 @@
+import { useCelo } from '@celo/react-celo';
 import { Container, Grid } from "@mantine/core";
 import { useLoaderData } from "@remix-run/react";
 import { json } from "@remix-run/node";
 import type { Farm } from "~/types/Farm";
 import type { V2_MetaFunction, LoaderArgs } from "@remix-run/node";
-import { useCelo } from "@celo/react-celo";
 
 import FarmCard from "~/components/FarmCard/FarmCard";
 import Header from "~/components/Header/Header";
@@ -18,8 +18,8 @@ export const loader = async ({ request }: LoaderArgs) => {
 
 export default function FarmRoute() {
   const data = useLoaderData<typeof loader>();
-  let { address } = useCelo();
-
+  const { address } = useCelo();
+  
   return (
     <>
       <Header />

@@ -1,3 +1,5 @@
+import { useCelo } from '@celo/react-celo';
+
 import {
   Text,
   Group,
@@ -13,6 +15,8 @@ import { useMediaQuery } from "@mantine/hooks";
 
 import TooltipButton from "./TooltipButton";
 import type { Farm } from "~/types/Farm";
+
+import { balanceOf, deposit } from "~/models/tokenizedVault.celo";
 
 const useStyles = createStyles((theme) => ({
   bigLabel: {
@@ -56,32 +60,44 @@ const FarmCard = ({
   const fetcher = useFetcher();
   const { classes } = useStyles();
   const isMobile = useMediaQuery("(max-width: 768px)");
+  const { address, connect } = useCelo();
   const { averageAPY, pricePerSlot } = farm;
   const totalInvested = pricePerSlot * investSlots;
-
+  
   const onInvest = async (walletId) => {
-    // Create investment
-    const data = new FormData();
-    data.append("farmId", farm.id.toString());
-    data.append("investedSlots", investSlots.toString());
-    data.append(
-      "json",
-      JSON.stringify({
-        farmName: farm.name,
-        yieldEarned: 0,
-        dateInvested: new Date().toISOString(),
-        investedAmount: totalInvested,
-        APY: averageAPY,
-        status: "active",
-        slots: investSlots,
-        walletId,
-      })
-    );
+    if (address) {
+      // Deposit assets on vault and receive vault tokens
+      const tx = await deposit(totalInvested, address);
+      console.log('Deposit tx: ', tx);
 
-    fetcher.submit(data, {
-      method: "post",
-      action: "/investments/new",
-    });
+      // Todo: validate if blockchain transaction was successful
+
+      // Create investment on db
+      const data = new FormData();
+      data.append("farmId", farm.id.toString());
+      data.append("investedSlots", investSlots.toString());
+      data.append(
+        "json",
+        JSON.stringify({
+          farmName: farm.name,
+          yieldEarned: 0,
+          dateInvested: new Date().toISOString(),
+          investedAmount: totalInvested,
+          APY: averageAPY,
+          status: "active",
+          slots: investSlots,
+          walletId,
+        })
+      );
+  
+      fetcher.submit(data, {
+        method: "post",
+        action: "/investments/new",
+      });
+    } else {
+      connect().catch((e) => console.log((e as Error).message));
+    }
+
   };
 
   return (
