@@ -37,7 +37,7 @@ export default function App() {
   return (
     <CeloProvider
       dapp={{
-        name: "Raiz investments dApp",
+        name: "Raiz Investments dApp",
         description: "ReFi dApp to invest in farms",
         url: "https://example.com", // Todo: set url
         icon: "https://example.com/favicon.ico", // Todo: set icon
