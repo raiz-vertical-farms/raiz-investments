@@ -94,6 +94,9 @@ const FarmCard = ({
       size="auto"
     >
       <Stack align="center" justify="center" spacing="xs">
+        <Text size="lg" weight="700">
+          Own a piece of our Lisbon Hybrid Farm. Make impact with profit!
+        </Text>
         <Divider
           my="sm"
           className={classes.divider}
@@ -146,6 +149,30 @@ const FarmCard = ({
               {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}€
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
+          </Stack>
+        </Group>
+        <Divider
+          my="sm"
+          className={classes.divider}
+          label="Impact"
+          labelPosition="center"
+        />
+        <Group align="flex-start" spacing="xl" noWrap>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>{investSlots * 2} l</Text>
+            <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
+          </Stack>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>{investSlots * 0.5}kg</Text>
+            <Text className={classes.wrappedLabel}>
+              CO<sub>2</sub> emissions avoided
+            </Text>
+          </Stack>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>
+              {investSlots * 0.1}m<sup>2</sup>
+            </Text>
+            <Text className={classes.wrappedLabel}>Farmland use avoided</Text>
           </Stack>
         </Group>
         <Space h="xl" />

@@ -15,5 +15,5 @@ export const action = async ({ request }: ActionArgs) => {
   // Create the investment
   const data = JSON.parse(formData.get("json") as string);
   await createInvestment(data);
-  return redirect("/investments");
+  return null;
 };

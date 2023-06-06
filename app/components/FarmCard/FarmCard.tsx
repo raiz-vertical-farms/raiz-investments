@@ -14,6 +14,7 @@ import { useDisclosure } from "@mantine/hooks";
 import QuantityInput from "./QuantityInput";
 import ConfirmModal from "./ConfirmModal";
 import TooltipButton from "./TooltipButton";
+import lisbonConceptFarm from "~/assets/lisbon_concept_farm.jpg";
 import type { Farm } from "~/types/Farm";
 
 const useStyles = createStyles((theme) => ({
@@ -89,7 +90,7 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
     <>
       <Card withBorder radius="md" p="md" className={classes.card}>
         <Card.Section>
-          <Image src={image} alt={location} height={180} />
+          <Image src={lisbonConceptFarm} alt={location} height={180} />
         </Card.Section>
 
         <Card.Section className={classes.section} mt="md">
