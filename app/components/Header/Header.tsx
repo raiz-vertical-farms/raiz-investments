@@ -95,7 +95,7 @@ export default function HeaderComponent() {
 
   const links = [
     { label: "Farms", href: "/farms" },
-    { label: "Investments", href: "/investments" },
+    { label: "Investments", href: "/" },
   ];
 
   const items = links.map((link) => (
