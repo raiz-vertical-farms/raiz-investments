@@ -84,13 +84,15 @@ const ConfirmModal = ({
       const checkTransactionApproved = () => {
         console.log('entrados')
         try {
-          const fetchAllowance = async () => await assetAllowance(walletId);
-          const allowance = fetchAllowance();
-          console.log('mi allowance', allowance);
-          const allowanceNum = kit.web3.utils.fromWei(allowance.toString(), "ether");
-          console.log('mi allowance num', allowanceNum)
+          const fetchAllowance = async () => await assetAllowance(walletId).then(allowance => {
+            console.log('mi allowance', allowance);
+            const allowanceNum = kit.web3.utils.fromWei(allowance.toString(), "ether");
+            console.log('mi allowance num', allowanceNum)
+            
+            setTransactionApproved(totalInvested <= Number(allowanceNum));
+          });
+          fetchAllowance();
           
-          setTransactionApproved(totalInvested <= Number(allowanceNum));
         } catch(e) {
           console.error(e);
         }
@@ -122,10 +124,8 @@ const ConfirmModal = ({
       const txDeposit = await deposit(totalInvested, walletId);
       
       // Todo: show link to redirect to celoscan to see transaction on new tab
-      console.log('deposit tx', txDeposit);
-      console.log('deposit hash', txDeposit.getHash());
-      console.log('deposit receipt', txDeposit.waitReceipt());
-      setTransactionUrl('');
+      const txHash = await txDeposit.getHash();
+      setTransactionUrl(`https://alfajores.celoscan.io/tx/${txHash}`);
 
       // Todo: validate if blockchain transaction was successful
 

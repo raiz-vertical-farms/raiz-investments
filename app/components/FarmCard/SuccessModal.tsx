@@ -29,7 +29,9 @@ const SuccessModal = ({ opened, close, transactionUrl }: ConfirmModalProps) => {
       size="auto"
     >
       <Stack align="center" justify="center" spacing="xs">
-        <img src={plant} alt="Plant" className={classes.plant} />
+        <div className={classes.plant}>
+          <img src={plant} alt="Plant" />
+        </div>
         <Text size="lg" weight={700}>
           “Congrats! 🌿
         </Text>
