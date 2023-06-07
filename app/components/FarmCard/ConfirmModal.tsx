@@ -1,5 +1,6 @@
-import { useEffect } from "react";
-import { useCelo } from "@celo/react-celo";
+import { useState, useEffect } from 'react';
+import { useCelo } from '@celo/react-celo';
+
 import {
   Text,
   Group,
@@ -16,7 +17,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import TooltipButton from "./TooltipButton";
 import type { Farm } from "~/types/Farm";
 
-import { balanceOf, deposit } from "~/models/tokenizedVault.celo";
+import { approve, deposit, kit, allowance } from "~/models/tokenizedVault.celo";
 
 const useStyles = createStyles((theme) => ({
   bigLabel: {
@@ -49,6 +50,7 @@ interface ConfirmModalProps {
   opened: boolean;
   close: () => void;
   openSuccess: () => void;
+  setTransactionUrl: (url: string) => void;
 }
 
 const ConfirmModal = ({
@@ -58,14 +60,16 @@ const ConfirmModal = ({
   opened,
   close,
   openSuccess,
+  setTransactionUrl,
 }: ConfirmModalProps) => {
   const fetcher = useFetcher();
   const { classes } = useStyles();
   const isMobile = useMediaQuery("(max-width: 768px)");
-  const { address, connect } = useCelo();
+  const { connect } = useCelo();
   const { averageAPY, pricePerSlot } = farm;
-  const totalInvested = pricePerSlot * investSlots;
-
+  const [ totalInvested, setTotalInvested ] = useState(0);
+  const [ transactionApproved, setTransactionApproved ] = useState(false);
+  
   useEffect(() => {
     if (fetcher.data?.success) {
       close();
@@ -73,11 +77,51 @@ const ConfirmModal = ({
     }
   }, [fetcher]);
 
+  useEffect(() => {
+    const resetModal = () => setTransactionApproved(false);
+    if (opened) {
+      // Todo: check allowance approved for vault contract to spend for user from blockchain
+      const checkTransactionApproved = () => {
+        try {
+          const fetchAllowance = async () => await allowance(walletId);
+          const allowance = fetchAllowance();
+          const allowanceNum = kit.web3.utils.fromWei(allowance, "ether");
+          
+          setTransactionApproved(totalInvested <= Number(allowanceNum));
+        } catch(e) {
+          console.error(e);
+        }
+      };
+      resetModal();
+      checkTransactionApproved();
+    }
+  }, [opened, totalInvested, walletId]);
+
+  useEffect(() => {
+    setTotalInvested(pricePerSlot * investSlots);
+  }, [pricePerSlot, investSlots]);
+
+  const onApproveInvest = async (walletId) => {
+    if (walletId) {
+      const tx = await approve(walletId, totalInvested);
+      // Todo: on success, set transactionApproved to true
+      if (tx) {
+        setTransactionApproved(true);
+      } 
+    }
+  };
+
   const onInvest = async (walletId) => {
-    if (address) {
+    if (walletId) {
       // Deposit assets on vault and receive vault tokens
-      const tx = await deposit(totalInvested, address);
-      console.log("Deposit tx: ", tx);
+      // Todo: separate approve from deposit
+      const txDeposit = await deposit(totalInvested, walletId);
+      
+      // Todo: show link to redirect to celoscan to see transaction on new tab
+      console.log('deposit tx', txDeposit);
+      console.log('deposit hash', txDeposit.getHash());
+      console.log('deposit receipt', txDeposit.waitReceipt());
+      setTransactionUrl('');
 
       // Todo: validate if blockchain transaction was successful
 
@@ -137,13 +181,13 @@ const ConfirmModal = ({
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>{pricePerSlot}</Text>
-            <Text className={classes.wrappedLabel}>€ / Space</Text>
+            <Text className={classes.wrappedLabel}>cUSD / Space</Text>
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{totalInvested}€</Text>
+            <Text className={classes.bigLabel}>{totalInvested}cUSD</Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
         </Group>
@@ -170,7 +214,7 @@ const ConfirmModal = ({
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
-              {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}€
+              {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}cUSD
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
@@ -201,20 +245,30 @@ const ConfirmModal = ({
         </Group>
         <Space h="xl" />
 
-        <TooltipButton
-          radius="sm"
-          onClick={() => onInvest(walletId)}
-          variant="filled"
-          fullWidth
-          disabled={!walletId}
-          sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
-          disabledtooltip="Please connect your wallet first"
-        >
-          Invest
-        </TooltipButton>
-        <Button radius="sm" onClick={close} variant="light" fullWidth>
-          Cancel
-        </Button>
+        <Group>
+          <TooltipButton
+            radius="sm"
+            onClick={() => onApproveInvest(walletId)}
+            variant="filled"
+            fullWidth
+            disabled={!walletId}
+            sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
+            disabledtooltip="Please connect your wallet first"
+          >
+            Approve
+          </TooltipButton>
+          <TooltipButton
+            radius="sm"
+            onClick={() => onInvest(walletId)}
+            variant="filled"
+            fullWidth
+            disabled={!walletId || transactionApproved}
+            sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
+            disabledtooltip="Please approve transaction first"
+          >
+            Invest
+          </TooltipButton>
+        </Group>
       </Stack>
     </Modal>
   );

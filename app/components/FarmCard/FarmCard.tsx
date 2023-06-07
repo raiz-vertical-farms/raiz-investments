@@ -73,6 +73,7 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
   const { image, name, location, slots, averageAPY, pricePerSlot } = farm;
   const { classes, theme } = useStyles();
   const [investSlots, setInvestSlots] = useState(1);
+  const [transactionUrl, setTransactionUrl] = useState('');
   const [opened, { open, close }] = useDisclosure(false);
   const [successOpened, { open: openSuccess, close: closeSuccess }] =
     useDisclosure(false);
@@ -80,7 +81,7 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
   const features = [
     { emoji: "📍", label: location },
     { emoji: "🌱", label: `Growing Spaces: ${slots}` },
-    { emoji: "💰", label: `Price per slot: ${pricePerSlot} €` },
+    { emoji: "💰", label: `Price per slot: ${pricePerSlot} cUSD` },
     { emoji: "📈", label: `Average APY: ${averageAPY}%` },
   ].map((badge) => (
     <Badge
@@ -134,7 +135,7 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
             sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
             disabledtooltip="Not enough slots available"
           >
-            Invest {pricePerSlot * investSlots} €
+            Invest {pricePerSlot * investSlots} cUSD
           </TooltipButton>
         </Group>
       </Card>
@@ -145,8 +146,9 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
         investSlots={investSlots}
         close={close}
         openSuccess={openSuccess}
+        setTransactionUrl={setTransactionUrl}
       />
-      <SuccessModal opened={successOpened} close={closeSuccess} />
+      <SuccessModal opened={successOpened} close={closeSuccess} transactionUrl={transactionUrl} />
     </>
   );
 };

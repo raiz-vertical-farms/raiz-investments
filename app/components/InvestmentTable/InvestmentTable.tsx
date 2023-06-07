@@ -58,7 +58,7 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
     if (!investmentId) return;
     // Unstake assets from blockchain vault using vault tokens
     const amount = Number(investmentAmount) + Number(investmentYieldEarned);
-    const tx = await withdraw(amount, address);
+    await withdraw(amount, address);
 
     // Todo: validate if blockchain transaction was successful
 
@@ -69,6 +69,8 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
       method: "post",
       action: "/investments/unstake",
     });
+
+    // Todo: show success screen
   };
 
   const rows = data.map((row) => {
@@ -82,9 +84,9 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
         </td>
         <td>{row.slots}</td>
         <td>{row.dateInvested.toString().slice(0, 16).replace("T", " ")}</td>
-        <td>{row.investedAmount} €</td>
+        <td>{row.investedAmount} cUSD</td>
         <td>{row.APY}%</td>
-        <td>{row.yieldEarned} €</td>
+        <td>{row.yieldEarned} cUSD</td>
         <td>
           {row.status === "active" && (
             <Button variant="subtle" onClick={() => onUnStake(row.id, row.investedAmount, row.yieldEarned)}>

@@ -13,9 +13,10 @@ const useStyles = createStyles((theme) => ({
 interface ConfirmModalProps {
   opened: boolean;
   close: () => void;
+  transactionUrl: string;
 }
 
-const SuccessModal = ({ opened, close }: ConfirmModalProps) => {
+const SuccessModal = ({ opened, close, transactionUrl }: ConfirmModalProps) => {
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { classes } = useStyles();
 
@@ -33,6 +34,7 @@ const SuccessModal = ({ opened, close }: ConfirmModalProps) => {
           “Congrats! 🌿
         </Text>
         <Text size="md">You are now growing your impact and profits!</Text>
+        <Text size="md">Follow this link to <a href={transactionUrl} target="_blank" rel="noreferrer" >see transaction</a></Text>
         <Space h="lg" />
         <Button variant="filled" onClick={close}>
           Close
