@@ -270,7 +270,7 @@ const ConfirmModal = ({
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
                 {investSlots * 2}
-                <span className={classes.unitLabel}>l</span>
+                <Text className={classes.unitLabel}>l</Text>
               </Text>
               <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
             </Stack>
@@ -291,7 +291,7 @@ const ConfirmModal = ({
           </Flex>
           <Flex align="center" justify="flex-start">
             <div>
-              <Text className={classes.emoji}>🚜</Text>
+              
             </div>
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
