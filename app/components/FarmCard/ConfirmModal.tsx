@@ -31,7 +31,7 @@ const useStyles = createStyles((theme) => ({
     fontWeight: 800,
     color: theme.colors.gray[7],
   },
-  label: {
+  unitLabel: {
     fontSize: theme.fontSizes.xl,
     lineHeight: theme.fontSizes.xl,
     fontWeight: 800,
@@ -215,7 +215,7 @@ const ConfirmModal = ({
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Flex>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{totalInvested}<span className={classes.label}>cUSD</span></Text>
+            <Text className={classes.bigLabel}>{totalInvested}<span className={classes.unitLabel}>cUSD</span></Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
         </Group>
@@ -248,7 +248,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}
-              <span className={classes.label}>cUSD</span>
+              <span className={classes.unitLabel}>cUSD</span>
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
@@ -267,7 +267,7 @@ const ConfirmModal = ({
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
                 {investSlots * 2}
-                <span className={classes.label}>l</span>
+                <span className={classes.unitLabel}>l</span>
               </Text>
               <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
             </Stack>
@@ -279,7 +279,7 @@ const ConfirmModal = ({
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
                 {investSlots * 0.5}
-                <span className={classes.label}>kg</span>
+                <span className={classes.unitLabel}>kg</span>
               </Text>
               <Text className={classes.wrappedLabel}>
                 CO<sub>2</sub> emissions avoided
@@ -293,7 +293,7 @@ const ConfirmModal = ({
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
                 {investSlots * 0.1}
-                <span className={classes.label}>
+                <span className={classes.unitLabel}>
                   m<sup>2</sup>
                 </span>
               </Text>
