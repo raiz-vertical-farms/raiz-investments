@@ -10,7 +10,7 @@ import {
 import { useFetcher } from "@remix-run/react";
 
 import { useCelo } from '@celo/react-celo';
-import { balanceOf, withdraw, totalAssets } from "~/models/tokenizedVault.celo";
+import { withdraw } from "~/models/tokenizedVault.celo";
 
 import type { Investment } from "~/types/Investment";
 

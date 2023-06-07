@@ -3,7 +3,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import plant from "~/assets/plant.jpg";
 
 const useStyles = createStyles((theme) => ({
-  plant: {
+  planta: {
     borderRadius: "100%",
     width: "100px",
     height: "100px",
@@ -29,9 +29,7 @@ const SuccessModal = ({ opened, close, transactionUrl }: ConfirmModalProps) => {
       size="auto"
     >
       <Stack align="center" justify="center" spacing="xs">
-        <div className={classes.plant}>
-          <img src={plant} alt="Plant" />
-        </div>
+        <img src={plant} alt="Plant" className={classes.planta} />
         <Text size="lg" weight={700}>
           “Congrats! 🌿
         </Text>
