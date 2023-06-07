@@ -62,18 +62,18 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
       // Unstake assets from blockchain vault using vault tokens
       const amount = Number(investmentAmount) + Number(investmentYieldEarned);
       const txWithdraw = await withdraw(amount, address);
-      const txWithdrawReceipt = await txWithdraw.waitReceipt();
-      console.log('txWithdrawReceipt', txWithdrawReceipt);
+      const { status } = await txWithdraw.waitReceipt();
       
-      // Todo: validate if blockchain transaction was successful
+      if (status) {
+        // Unstake investment from db
+        const data = new FormData();
+        data.append("investmentId", investmentId.toString());
+        fetcher.submit(data, {
+          method: "post",
+          action: "/investments/unstake",
+        });
+      }
       
-      // Unstake investment from db
-      const data = new FormData();
-      data.append("investmentId", investmentId.toString());
-      fetcher.submit(data, {
-        method: "post",
-        action: "/investments/unstake",
-      });
     } catch(e) {
       console.error(e);
     }

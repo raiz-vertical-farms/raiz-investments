@@ -64,7 +64,7 @@ export const assetAllowance = async (spender) => {
 export const deposit = async (assets, receiver) => {
 	const contract = await initContract();
 
-	// Todo: Get stable token contract (asset) decimals
+	// Todo: Get stable token contract (asset) decimals from token contract
 	const allowance = kit.web3.utils.toWei(assets.toString(), "ether");
 
 	let txObject = await contract.methods.deposit(allowance, receiver);

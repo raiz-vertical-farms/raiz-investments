@@ -131,38 +131,35 @@ const ConfirmModal = ({
       try {
         // Deposit assets on vault and receive vault tokens
         const txDeposit = await deposit(totalInvested, walletId);
+        const { status, transactionHash } = await txDeposit.waitReceipt();
         
-        const txHash = await txDeposit.getHash();
-        //! Todo: Change to mainnet on prod
-        setTransactionUrl(`https://alfajores.celoscan.io/tx/${txHash}`);
-  
-        // Todo: validate if blockchain transaction was successful
-        const txDepositReceipt = await txDeposit.waitReceipt();
-        console.log('tx recepet:', txDepositReceipt);
+        if (status) {
+          //! Todo: Change to mainnet on prod
+          setTransactionUrl(`https://alfajores.celoscan.io/tx/${transactionHash}`);
 
-  
-        // Create investment on db
-        const data = new FormData();
-        data.append("farmId", farm.id.toString());
-        data.append("investedSlots", investSlots.toString());
-        data.append(
-          "json",
-          JSON.stringify({
-            farmName: farm.name,
-            yieldEarned: 0,
-            dateInvested: new Date().toISOString(),
-            investedAmount: totalInvested,
-            APY: averageAPY,
-            status: "active",
-            slots: investSlots,
-            walletId,
-          })
-        );
-  
-        await fetcher.submit(data, {
-          method: "post",
-          action: "/investments/new",
-        });
+          // Create investment on db
+          const data = new FormData();
+          data.append("farmId", farm.id.toString());
+          data.append("investedSlots", investSlots.toString());
+          data.append(
+            "json",
+            JSON.stringify({
+              farmName: farm.name,
+              yieldEarned: 0,
+              dateInvested: new Date().toISOString(),
+              investedAmount: totalInvested,
+              APY: averageAPY,
+              status: "active",
+              slots: investSlots,
+              walletId,
+            })
+          );
+    
+          await fetcher.submit(data, {
+            method: "post",
+            action: "/investments/new",
+          });
+        }
       } catch(e) {
         console.error(e);
       }
@@ -193,8 +190,13 @@ const ConfirmModal = ({
         />
         <Group align="flex-start" noWrap>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{investSlots}</Text>
-            <Text className={classes.wrappedLabel}>Spaces</Text>
+            <div>
+              <Text className={classes.bigLabel}>🌱</Text>
+            </div>
+            <div>
+              <Text className={classes.bigLabel}>{investSlots}</Text>
+              <Text className={classes.wrappedLabel}>Spaces</Text>
+            </div>
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>x</Text>
