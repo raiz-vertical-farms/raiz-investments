@@ -117,8 +117,11 @@ const ConfirmModal = ({
           console.log('approve tx: ', tx);
     
           const transactionHash = await tx.getHash();
+          console.log('transactionHash', transactionHash);
           
-          const receipt = await kit.web3.eth.getTransactionReceipt(transactionHash);
+          const receipt = await kit.web3.eth.getTransactionReceipt(transactionHash).then(({ status }) => {
+            console.log('status', status);
+          });
           console.log('recepit', receipt);
         });
       } catch(e) {
