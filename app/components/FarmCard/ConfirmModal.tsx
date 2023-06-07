@@ -48,7 +48,10 @@ const useStyles = createStyles((theme) => ({
   },
   buttonsContainer: {
     width: "100%",
-  }
+  },
+  emoji: {
+    fontSize: '2rem',
+  },
 }));
 
 interface ConfirmModalProps {
@@ -197,7 +200,7 @@ const ConfirmModal = ({
         <Group align="flex-start" noWrap>
           <Flex align="center" justify="flex-start">
             <div>
-              <Text className={classes.bigLabel}>🌱</Text>
+              <Text className={classes.emoji}>🌱</Text>
             </div>
             <div>
               <Text className={classes.bigLabel}>{investSlots}</Text>
@@ -235,7 +238,7 @@ const ConfirmModal = ({
           </Stack>
           <Flex align="center" justify="flex-start">
             <div>
-              <Text className={classes.bigLabel}>📈</Text>
+              <Text className={classes.emoji}>📈</Text>
             </div>
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>{1 + averageAPY / 100}</Text>
@@ -262,7 +265,7 @@ const ConfirmModal = ({
         <Group align="flex-start" spacing="xl" noWrap>
           <Flex align="center" justify="flex-start">
             <div>
-              <Text className={classes.bigLabel}>💧</Text>
+              <Text className={classes.emoji}>💧</Text>
             </div>
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
@@ -274,7 +277,7 @@ const ConfirmModal = ({
           </Flex>
           <Flex align="center" justify="flex-start">
             <div>
-              <Text className={classes.bigLabel}>🌎</Text>
+              <Text className={classes.emoji}>🌎</Text>
             </div>
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
@@ -288,7 +291,7 @@ const ConfirmModal = ({
           </Flex>
           <Flex align="center" justify="flex-start">
             <div>
-              <Text className={classes.bigLabel}>🚜</Text>
+              <Text className={classes.emoji}>🚜</Text>
             </div>
             <Stack spacing={0} align="center" justify="flex-start">
               <Text className={classes.bigLabel}>
