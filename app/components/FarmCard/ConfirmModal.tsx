@@ -218,7 +218,7 @@ const ConfirmModal = ({
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Flex>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{totalInvested}<span className={classes.unitLabel}>cUSD</span></Text>
+            <Text className={classes.bigLabel}>{totalInvested}<span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>cUSD</span></Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
         </Group>
