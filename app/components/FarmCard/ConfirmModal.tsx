@@ -239,15 +239,10 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>x</Text>
           </Stack>
-          <Flex align="center" justify="flex-start">
-            <div>
-              <Text className={classes.emoji}>📈</Text>
-            </div>
-            <Stack spacing={0} align="center" justify="flex-start">
-              <Text className={classes.bigLabel}>{1 + averageAPY / 100}</Text>
-              <Text className={classes.wrappedLabel}>{averageAPY}% APY</Text>
-            </Stack>
-          </Flex>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>{1 + averageAPY / 100}</Text>
+            <Text className={classes.wrappedLabel}>{averageAPY}% APY</Text>
+          </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Stack>
