@@ -251,7 +251,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}
-              <span className={classes.unitLabel}>cUSD</span>
+              <Text className={classes.unitLabel}>cUSD</Text>
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
@@ -263,46 +263,40 @@ const ConfirmModal = ({
           labelPosition="center"
         />
         <Group align="flex-start" spacing="xl" noWrap>
-          <Flex align="center" justify="flex-start">
-            <div>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>
+              {investSlots * 2}
+              <span className={classes.unitLabel}>l</span>
+            </Text>
+            <Flex align="center" justify="center">
               <Text className={classes.emoji}>💧</Text>
-            </div>
-            <Stack spacing={0} align="center" justify="flex-start">
-              <Text className={classes.bigLabel}>
-                {investSlots * 2}
-                <Text className={classes.unitLabel}>l</Text>
-              </Text>
               <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
-            </Stack>
-          </Flex>
-          <Flex align="center" justify="flex-start">
-            <div>
+            </Flex>
+          </Stack>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>
+              {investSlots * 0.5}
+              <span className={classes.unitLabel}>kg</span>
+            </Text>
+            <Flex align="center" justify="center">
               <Text className={classes.emoji}>🌎</Text>
-            </div>
-            <Stack spacing={0} align="center" justify="flex-start">
-              <Text className={classes.bigLabel}>
-                {investSlots * 0.5}
-                <span className={classes.unitLabel}>kg</span>
-              </Text>
               <Text className={classes.wrappedLabel}>
                 CO<sub>2</sub> emissions avoided
               </Text>
-            </Stack>
-          </Flex>
-          <Flex align="center" justify="flex-start">
-            <div>
-              
-            </div>
-            <Stack spacing={0} align="center" justify="flex-start">
-              <Text className={classes.bigLabel}>
-                {investSlots * 0.1}
-                <span className={classes.unitLabel}>
-                  m<sup>2</sup>
-                </span>
-              </Text>
+            </Flex>
+          </Stack>
+          <Stack spacing={0} align="center" justify="flex-start">
+            <Text className={classes.bigLabel}>
+              {investSlots * 0.1}
+              <span className={classes.unitLabel}>
+                m<sup>2</sup>
+              </span>
+            </Text>
+            <Flex align="center" justify="center">
+              <Text className={classes.emoji}>🚜</Text>
               <Text className={classes.wrappedLabel}>Farmland use avoided</Text>
-            </Stack>
-          </Flex>
+            </Flex>
+          </Stack>
         </Group>
         <Space h="xl" />
 
