@@ -19,6 +19,8 @@ import type { Farm } from "~/types/Farm";
 
 import { approve, deposit, kit, assetAllowance } from "~/models/tokenizedVault.celo";
 
+const UNIT_LABEL_FONT_SIZE = '1.25rem';
+
 const useStyles = createStyles((theme) => ({
   bigLabel: {
     fontSize: theme.fontSizes.xxl,
@@ -50,7 +52,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
   },
   emoji: {
-    fontSize: '2rem',
+    fontSize: '2.2rem',
   },
 }));
 
@@ -220,7 +222,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {totalInvested}
-              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>cUSD</span>
+              <span className={classes.unitLabel} style={{ fontSize: UNIT_LABEL_FONT_SIZE }}>cUSD</span>
             </Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
@@ -249,7 +251,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}
-              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>cUSD</span>
+              <span className={classes.unitLabel} style={{ fontSize: UNIT_LABEL_FONT_SIZE }}>cUSD</span>
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
@@ -266,7 +268,7 @@ const ConfirmModal = ({
               <Text className={classes.emoji}>💧</Text>
               <Text className={classes.bigLabel}>
                 {investSlots * 2}
-                <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>l</span>
+                <span className={classes.unitLabel} style={{ fontSize: UNIT_LABEL_FONT_SIZE }}>l</span>
               </Text>
             </Flex>
             <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
@@ -276,7 +278,7 @@ const ConfirmModal = ({
               <Text className={classes.emoji}>🌎</Text>
               <Text className={classes.bigLabel}>
                 {investSlots * 0.5}
-                <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>kg</span>
+                <span className={classes.unitLabel} style={{ fontSize: UNIT_LABEL_FONT_SIZE }}>kg</span>
               </Text>
             </Flex>
             <Text className={classes.wrappedLabel}>
@@ -288,7 +290,7 @@ const ConfirmModal = ({
               <Text className={classes.emoji}>🚜</Text>
               <Text className={classes.bigLabel}>
                 {investSlots * 0.1}
-                <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>
+                <span className={classes.unitLabel} style={{ fontSize: UNIT_LABEL_FONT_SIZE }}>
                   m<sup>2</sup>
                 </span>
               </Text>
