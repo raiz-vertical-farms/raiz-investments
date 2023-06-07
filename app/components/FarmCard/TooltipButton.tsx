@@ -1,7 +1,7 @@
 import { Tooltip, Button } from "@mantine/core";
 
-const TooltipButton = (props) => {
-  const newProps = { ...props };
+const TooltipButton = ({ ...props }) => {
+  // const newProps = { ...props };
 
   // Todo: delete
   // if (props.disabled) {
@@ -10,7 +10,7 @@ const TooltipButton = (props) => {
   // }
   return (
     <Tooltip label={props.disabledtooltip} disabled={!props.disabled}>
-      <Button {...newProps} />
+      <Button {...props} />
     </Tooltip>
   );
 };

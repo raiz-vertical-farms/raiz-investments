@@ -112,18 +112,19 @@ const ConfirmModal = ({
       setLoadingApprove(true);
       // Todo: on success, set transactionApproved to true
       try {
-        await approve(walletId, totalInvested).then(async (tx) => {
+        const txApprove = await approve(walletId, totalInvested).then(async (tx) => {
           setTransactionApproved(true);
           console.log('approve tx: ', tx);
     
           const transactionHash = await tx.getHash();
           console.log('transactionHash', transactionHash);
           
-          const receipt = await kit.web3.eth.getTransactionReceipt(transactionHash).then(({ status }) => {
-            console.log('status', status);
+          const receipt = await kit.web3.eth.getTransactionReceipt(transactionHash).then((res) => {
+            console.log('res', res);
           });
           console.log('recepit', receipt);
         });
+        console.log('txApprove', txApprove);
       } catch(e) {
         console.error(e);
       }
