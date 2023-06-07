@@ -85,7 +85,9 @@ const ConfirmModal = ({
         try {
           const fetchAllowance = async () => await allowance(walletId);
           const allowance = fetchAllowance();
+          console.log('mi allowance', allowance)
           const allowanceNum = kit.web3.utils.fromWei(allowance, "ether");
+          console.log('mi allowance num', allowanceNum)
           
           setTransactionApproved(totalInvested <= Number(allowanceNum));
         } catch(e) {
@@ -104,6 +106,7 @@ const ConfirmModal = ({
   const onApproveInvest = async (walletId) => {
     if (walletId) {
       const tx = await approve(walletId, totalInvested);
+      console.log('approve tx: ', tx)
       // Todo: on success, set transactionApproved to true
       if (tx) {
         setTransactionApproved(true);
@@ -262,7 +265,7 @@ const ConfirmModal = ({
             onClick={() => onInvest(walletId)}
             variant="filled"
             fullWidth
-            disabled={!walletId || transactionApproved}
+            disabled={!walletId || !transactionApproved}
             sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
             disabledtooltip="Please approve transaction first"
           >
