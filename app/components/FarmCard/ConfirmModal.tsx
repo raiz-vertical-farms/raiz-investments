@@ -5,6 +5,7 @@ import {
   Text,
   Group,
   Stack,
+  Flex,
   Modal,
   Divider,
   Space,
@@ -189,7 +190,7 @@ const ConfirmModal = ({
           labelPosition="center"
         />
         <Group align="flex-start" noWrap>
-          <Stack spacing={0} align="center" justify="flex-start">
+          <Flex align="center" justify="flex-start">
             <div>
               <Text className={classes.bigLabel}>🌱</Text>
             </div>
@@ -197,17 +198,17 @@ const ConfirmModal = ({
               <Text className={classes.bigLabel}>{investSlots}</Text>
               <Text className={classes.wrappedLabel}>Spaces</Text>
             </div>
-          </Stack>
-          <Stack spacing={0} align="center" justify="flex-start">
+          </Flex>
+          <Flex align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>x</Text>
-          </Stack>
+          </Flex>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>{pricePerSlot}</Text>
             <Text className={classes.wrappedLabel}>cUSD / Space</Text>
           </Stack>
-          <Stack spacing={0} align="center" justify="flex-start">
+          <Flex align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>=</Text>
-          </Stack>
+          </Flex>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>{totalInvested}cUSD</Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
@@ -227,10 +228,15 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>x</Text>
           </Stack>
-          <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{1 + averageAPY / 100}</Text>
-            <Text className={classes.wrappedLabel}>{averageAPY}% APY</Text>
-          </Stack>
+          <Flex align="center" justify="flex-start">
+            <div>
+              <Text className={classes.bigLabel}>📈</Text>
+            </div>
+            <Stack spacing={0} align="center" justify="flex-start">
+              <Text className={classes.bigLabel}>{1 + averageAPY / 100}</Text>
+              <Text className={classes.wrappedLabel}>{averageAPY}% APY</Text>
+            </Stack>
+          </Flex>
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Stack>
@@ -248,22 +254,37 @@ const ConfirmModal = ({
           labelPosition="center"
         />
         <Group align="flex-start" spacing="xl" noWrap>
-          <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{investSlots * 2} l</Text>
-            <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
-          </Stack>
-          <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{investSlots * 0.5}kg</Text>
-            <Text className={classes.wrappedLabel}>
-              CO<sub>2</sub> emissions avoided
-            </Text>
-          </Stack>
-          <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>
-              {investSlots * 0.1}m<sup>2</sup>
-            </Text>
-            <Text className={classes.wrappedLabel}>Farmland use avoided</Text>
-          </Stack>
+          <Flex align="center" justify="flex-start">
+            <div>
+              <Text className={classes.bigLabel}>💧</Text>
+            </div>
+            <Stack spacing={0} align="center" justify="flex-start">
+              <Text className={classes.bigLabel}>{investSlots * 2} l</Text>
+              <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
+            </Stack>
+          </Flex>
+          <Flex align="center" justify="flex-start">
+            <div>
+              <Text className={classes.bigLabel}>🌎</Text>
+            </div>
+            <Stack spacing={0} align="center" justify="flex-start">
+              <Text className={classes.bigLabel}>{investSlots * 0.5}kg</Text>
+              <Text className={classes.wrappedLabel}>
+                CO<sub>2</sub> emissions avoided
+              </Text>
+            </Stack>
+          </Flex>
+          <Flex align="center" justify="flex-start">
+            <div>
+              <Text className={classes.bigLabel}>🚜</Text>
+            </div>
+            <Stack spacing={0} align="center" justify="flex-start">
+              <Text className={classes.bigLabel}>
+                {investSlots * 0.1}m<sup>2</sup>
+              </Text>
+              <Text className={classes.wrappedLabel}>Farmland use avoided</Text>
+            </Stack>
+          </Flex>
         </Group>
         <Space h="xl" />
 
