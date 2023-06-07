@@ -40,7 +40,7 @@ const useStyles = createStyles((theme) => ({
     width: "100%",
   },
   wrappedLabel: {
-    maxWidth: "70px",
+    maxWidth: "80px",
     textAlign: "center",
     fontSize: theme.fontSizes.xs,
     color: theme.colors.gray[7],
@@ -267,38 +267,38 @@ const ConfirmModal = ({
         />
         <Group align="flex-start" spacing="xl" noWrap>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>
-              {investSlots * 2}
-              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>l</span>
-            </Text>
             <Flex align="center" justify="center">
               <Text className={classes.emoji}>💧</Text>
-              <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
-            </Flex>
-          </Stack>
-          <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>
-              {investSlots * 0.5}
-              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>kg</span>
-            </Text>
-            <Flex align="center" justify="center">
-              <Text className={classes.emoji}>🌎</Text>
-              <Text className={classes.wrappedLabel}>
-                CO<sub>2</sub> emissions avoided
+              <Text className={classes.bigLabel}>
+                {investSlots * 2}
+                <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>l</span>
               </Text>
             </Flex>
+            <Text className={classes.wrappedLabel}>Water Saved per Year</Text>
           </Stack>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>
-              {investSlots * 0.1}
-              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>
-                m<sup>2</sup>
-              </span>
+            <Flex align="center" justify="center">
+              <Text className={classes.emoji}>🌎</Text>
+              <Text className={classes.bigLabel}>
+                {investSlots * 0.5}
+                <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>kg</span>
+              </Text>
+            </Flex>
+            <Text className={classes.wrappedLabel}>
+              CO<sub>2</sub> emissions avoided
             </Text>
+          </Stack>
+          <Stack spacing={0} align="center" justify="flex-start">
             <Flex align="center" justify="center">
               <Text className={classes.emoji}>🚜</Text>
-              <Text className={classes.wrappedLabel}>Farmland use avoided</Text>
+              <Text className={classes.bigLabel}>
+                {investSlots * 0.1}
+                <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>
+                  m<sup>2</sup>
+                </span>
+              </Text>
             </Flex>
+            <Text className={classes.wrappedLabel}>Farmland use avoided</Text>
           </Stack>
         </Group>
         <Space h="xl" />
