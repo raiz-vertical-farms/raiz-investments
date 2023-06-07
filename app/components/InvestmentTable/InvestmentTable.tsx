@@ -61,7 +61,9 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
     try {
       // Unstake assets from blockchain vault using vault tokens
       const amount = Number(investmentAmount) + Number(investmentYieldEarned);
-      await withdraw(amount, address);
+      const txWithdraw = await withdraw(amount, address);
+      const txWithdrawReceipt = await txWithdraw.waitReceipt();
+      console.log('txWithdrawReceipt', txWithdrawReceipt);
       
       // Todo: validate if blockchain transaction was successful
       

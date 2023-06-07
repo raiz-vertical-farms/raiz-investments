@@ -84,7 +84,6 @@ const ConfirmModal = ({
   useEffect(() => {
     const resetModal = () => setTransactionApproved(false);
     if (opened) {
-      // Todo: check allowance approved for vault contract to spend for user from blockchain
       const checkTransactionApproved = () => {
         try {
           const fetchAllowance = async () => await assetAllowance(walletId).then(allowance => {
@@ -110,25 +109,13 @@ const ConfirmModal = ({
   const onApproveInvest = async (walletId) => {
     if (walletId) {
       setLoadingApprove(true);
-      // Todo: on success, set transactionApproved to true
       try {
-        const txApprove = await approve(walletId, totalInvested).then(async (tx) => {
-          console.log('approve tx: ', tx);
-          
-          const transactionHash = await tx.getHash();
-          console.log('transactionHash', transactionHash);
-          if (transactionHash) {
+        await approve(walletId, totalInvested).then(async (tx) => {
+          const { status } = await tx.waitReceipt();
+          if (status) {
             setTransactionApproved(true);
           }
-          const transactionReceipt = await tx.waitReceipt();
-          console.log('transactionReceipt', transactionReceipt);
-          
-          const receipt = await kit.web3.eth.getTransactionReceipt(transactionHash).then((res) => {
-            console.log('res', res);
-          });
-          console.log('recepit', receipt);
         });
-        console.log('txApprove', txApprove);
       } catch(e) {
         console.error(e);
       }
@@ -143,7 +130,6 @@ const ConfirmModal = ({
       setLoadingInvest(true);
       try {
         // Deposit assets on vault and receive vault tokens
-        // Todo: separate approve from deposit
         const txDeposit = await deposit(totalInvested, walletId);
         
         const txHash = await txDeposit.getHash();
@@ -151,6 +137,9 @@ const ConfirmModal = ({
         setTransactionUrl(`https://alfajores.celoscan.io/tx/${txHash}`);
   
         // Todo: validate if blockchain transaction was successful
+        const txDepositReceipt = await txDeposit.waitReceipt();
+        console.log('tx recepet:', txDepositReceipt);
+
   
         // Create investment on db
         const data = new FormData();
