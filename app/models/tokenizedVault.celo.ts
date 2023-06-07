@@ -54,7 +54,7 @@ export const approve = async (signer, assets) => {
   return tx;
 };
 
-export const allowance = async (spender) => {
+export const assetAllowance = async (spender) => {
   let cUSDcontract = await kit.contracts.getStableToken();
 
   const currentAllowance  = await cUSDcontract.allowance(spender, TOKENIZEDVAULT_CONTRACT_ADDRESS);
