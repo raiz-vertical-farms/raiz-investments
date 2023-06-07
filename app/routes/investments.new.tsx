@@ -1,4 +1,4 @@
-import { redirect } from "@remix-run/node";
+import { redirect, json } from "@remix-run/node";
 import type { ActionArgs } from "@remix-run/node";
 
 import { createInvestment } from "~/models/investment.server";
@@ -15,5 +15,5 @@ export const action = async ({ request }: ActionArgs) => {
   // Create the investment
   const data = JSON.parse(formData.get("json") as string);
   await createInvestment(data);
-  return null;
+  return json({ success: true });
 };

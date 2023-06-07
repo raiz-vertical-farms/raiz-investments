@@ -1,5 +1,5 @@
 import { useState, useEffect } from "react";
-import { useCelo } from '@celo/react-celo';
+import { useCelo } from "@celo/react-celo";
 
 import {
   Card,
@@ -15,6 +15,7 @@ import { useDisclosure } from "@mantine/hooks";
 
 import QuantityInput from "./QuantityInput";
 import ConfirmModal from "./ConfirmModal";
+import SuccessModal from "./SuccessModal";
 import TooltipButton from "./TooltipButton";
 import lisbonConceptFarm from "~/assets/lisbon_concept_farm.jpg";
 import type { Farm } from "~/types/Farm";
@@ -73,6 +74,8 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
   const { classes, theme } = useStyles();
   const [investSlots, setInvestSlots] = useState(1);
   const [opened, { open, close }] = useDisclosure(false);
+  const [successOpened, { open: openSuccess, close: closeSuccess }] =
+    useDisclosure(false);
 
   const features = [
     { emoji: "📍", label: location },
@@ -141,7 +144,9 @@ const FarmCard = ({ farm, walletId }: FarmCardProps) => {
         opened={opened}
         investSlots={investSlots}
         close={close}
+        openSuccess={openSuccess}
       />
+      <SuccessModal opened={successOpened} close={closeSuccess} />
     </>
   );
 };

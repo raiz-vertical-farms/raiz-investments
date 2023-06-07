@@ -1,5 +1,5 @@
-import { useCelo } from '@celo/react-celo';
-
+import { useEffect } from "react";
+import { useCelo } from "@celo/react-celo";
 import {
   Text,
   Group,
@@ -42,33 +42,42 @@ const useStyles = createStyles((theme) => ({
   },
 }));
 
-interface FarmCardProps {
+interface ConfirmModalProps {
   farm: Farm;
   walletId?: string | null;
   investSlots: number;
   opened: boolean;
   close: () => void;
+  openSuccess: () => void;
 }
 
-const FarmCard = ({
+const ConfirmModal = ({
   farm,
   walletId,
   investSlots,
   opened,
   close,
-}: FarmCardProps) => {
+  openSuccess,
+}: ConfirmModalProps) => {
   const fetcher = useFetcher();
   const { classes } = useStyles();
   const isMobile = useMediaQuery("(max-width: 768px)");
   const { address, connect } = useCelo();
   const { averageAPY, pricePerSlot } = farm;
   const totalInvested = pricePerSlot * investSlots;
-  
+
+  useEffect(() => {
+    if (fetcher.data?.success) {
+      close();
+      openSuccess();
+    }
+  }, [fetcher]);
+
   const onInvest = async (walletId) => {
     if (address) {
       // Deposit assets on vault and receive vault tokens
       const tx = await deposit(totalInvested, address);
-      console.log('Deposit tx: ', tx);
+      console.log("Deposit tx: ", tx);
 
       // Todo: validate if blockchain transaction was successful
 
@@ -89,15 +98,14 @@ const FarmCard = ({
           walletId,
         })
       );
-  
-      fetcher.submit(data, {
+
+      await fetcher.submit(data, {
         method: "post",
         action: "/investments/new",
       });
     } else {
       connect().catch((e) => console.log((e as Error).message));
     }
-
   };
 
   return (
@@ -212,4 +220,4 @@ const FarmCard = ({
   );
 };
 
-export default FarmCard;
+export default ConfirmModal;
