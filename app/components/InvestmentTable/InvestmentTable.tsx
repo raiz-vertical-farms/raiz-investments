@@ -53,25 +53,34 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
   const { classes, cx } = useStyles();
   const fetcher = useFetcher();
   const [scrolled, setScrolled] = useState(false);
+  const [loadingId, setLoadingId] = useState<number | undefined>(undefined);
 
   const onUnStake = async (investmentId: number | undefined, investmentAmount: number | undefined, investmentYieldEarned: number | undefined) => {
     if (!investmentId) return;
-    // Unstake assets from blockchain vault using vault tokens
-    const amount = Number(investmentAmount) + Number(investmentYieldEarned);
-    await withdraw(amount, address);
-
-    // Todo: validate if blockchain transaction was successful
-
-    // Unstake investment from db
-    const data = new FormData();
-    data.append("investmentId", investmentId.toString());
-    fetcher.submit(data, {
-      method: "post",
-      action: "/investments/unstake",
-    });
-
+    setLoadingId(investmentId);
+    try {
+      // Unstake assets from blockchain vault using vault tokens
+      const amount = Number(investmentAmount) + Number(investmentYieldEarned);
+      await withdraw(amount, address);
+      
+      // Todo: validate if blockchain transaction was successful
+      
+      // Unstake investment from db
+      const data = new FormData();
+      data.append("investmentId", investmentId.toString());
+      fetcher.submit(data, {
+        method: "post",
+        action: "/investments/unstake",
+      });
+    } catch(e) {
+      console.error(e);
+    }
+    setLoadingId(undefined);
+    
     // Todo: show success screen
   };
+
+  const isLoading = (id) => loadingId === id;
 
   const rows = data.map((row) => {
     return (
@@ -89,7 +98,7 @@ const InvestmentTable = ({ data }: InvestmentTableProps) => {
         <td>{row.yieldEarned} cUSD</td>
         <td>
           {row.status === "active" && (
-            <Button variant="subtle" onClick={() => onUnStake(row.id, row.investedAmount, row.yieldEarned)}>
+            <Button variant="subtle" onClick={() => onUnStake(row.id, row.investedAmount, row.yieldEarned)} loading={isLoading(row.id)}>
               Unstake
             </Button>
           )}

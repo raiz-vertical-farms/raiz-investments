@@ -5,7 +5,6 @@ import {
   Text,
   Group,
   Stack,
-  Button,
   Modal,
   Divider,
   Space,
@@ -69,6 +68,7 @@ const ConfirmModal = ({
   const { averageAPY, pricePerSlot } = farm;
   const [ totalInvested, setTotalInvested ] = useState(0);
   const [ transactionApproved, setTransactionApproved ] = useState(false);
+  const [ loading, setLoading ] = useState(false);
   
   useEffect(() => {
     if (fetcher.data?.success) {
@@ -105,16 +105,22 @@ const ConfirmModal = ({
 
   const onApproveInvest = async (walletId) => {
     if (walletId) {
+      setLoading(true);
       // Todo: on success, set transactionApproved to true
-      await approve(walletId, totalInvested).then(async (tx) => {
-        setTransactionApproved(true);
-        console.log('approve tx: ', tx);
-  
-        const transactionHash = await tx.getHash();
-  
-        const receipt = kit.web3.eth.getTransactionReceipt(transactionHash);
-        console.log('recepit', receipt);
-      });
+      try {
+        await approve(walletId, totalInvested).then(async (tx) => {
+          setTransactionApproved(true);
+          console.log('approve tx: ', tx);
+    
+          const transactionHash = await tx.getHash();
+          
+          const receipt = kit.web3.eth.getTransactionReceipt(transactionHash);
+          console.log('recepit', receipt);
+        });
+      } catch(e) {
+        console.error(e);
+      }
+      setLoading(false);
     } else {
       connect().catch((e) => console.log((e as Error).message));
     }
@@ -252,15 +258,16 @@ const ConfirmModal = ({
         </Group>
         <Space h="xl" />
 
-        <Group>
+        <Group position="center" grow>
           <TooltipButton
             radius="sm"
             onClick={() => onApproveInvest(walletId)}
             variant="filled"
             fullWidth
-            disabled={!walletId}
+            disabled={loading}
             sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
-            disabledtooltip="Please connect your wallet first"
+            disabledtooltip="Please wait for transaction to finish"
+            color="blue"
           >
             Approve
           </TooltipButton>
@@ -269,9 +276,10 @@ const ConfirmModal = ({
             onClick={() => onInvest(walletId)}
             variant="filled"
             fullWidth
-            disabled={!walletId || !transactionApproved}
+            disabled={!transactionApproved}
             sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
             disabledtooltip="Please approve transaction first"
+            loading={loading}
           >
             Invest
           </TooltipButton>
