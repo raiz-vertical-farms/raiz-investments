@@ -218,7 +218,10 @@ const ConfirmModal = ({
             <Text className={classes.secondaryBigLabel}>=</Text>
           </Flex>
           <Stack spacing={0} align="center" justify="flex-start">
-            <Text className={classes.bigLabel}>{totalInvested}<span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>cUSD</span></Text>
+            <Text className={classes.bigLabel}>
+              {totalInvested}
+              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>cUSD</span>
+            </Text>
             <Text className={classes.wrappedLabel}>Total Price</Text>
           </Stack>
         </Group>
@@ -251,7 +254,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {(totalInvested * (1 + averageAPY / 100)).toFixed(2)}
-              <Text className={classes.unitLabel}>cUSD</Text>
+              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>cUSD</span>
             </Text>
             <Text className={classes.wrappedLabel}>Paid Out after 1 year</Text>
           </Stack>
@@ -266,7 +269,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {investSlots * 2}
-              <span className={classes.unitLabel}>l</span>
+              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>l</span>
             </Text>
             <Flex align="center" justify="center">
               <Text className={classes.emoji}>💧</Text>
@@ -276,7 +279,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {investSlots * 0.5}
-              <span className={classes.unitLabel}>kg</span>
+              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>kg</span>
             </Text>
             <Flex align="center" justify="center">
               <Text className={classes.emoji}>🌎</Text>
@@ -288,7 +291,7 @@ const ConfirmModal = ({
           <Stack spacing={0} align="center" justify="flex-start">
             <Text className={classes.bigLabel}>
               {investSlots * 0.1}
-              <span className={classes.unitLabel}>
+              <span className={classes.unitLabel} style={{ fontSize: '1.25rem' }}>
                 m<sup>2</sup>
               </span>
             </Text>
