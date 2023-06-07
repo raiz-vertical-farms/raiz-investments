@@ -20,8 +20,8 @@ import { approve, deposit, kit, assetAllowance } from "~/models/tokenizedVault.c
 
 const useStyles = createStyles((theme) => ({
   bigLabel: {
-    fontSize: theme.fontSizes.xxxl,
-    lineHeight: theme.fontSizes.xxxl,
+    fontSize: theme.fontSizes.xxl,
+    lineHeight: theme.fontSizes.xxl,
     fontWeight: 800,
   },
   secondaryBigLabel: {
@@ -40,6 +40,9 @@ const useStyles = createStyles((theme) => ({
     color: theme.colors.gray[7],
     fontWeight: 500,
   },
+  buttonsContainer: {
+    width: "100%",
+  }
 }));
 
 interface ConfirmModalProps {
@@ -68,7 +71,8 @@ const ConfirmModal = ({
   const { averageAPY, pricePerSlot } = farm;
   const [ totalInvested, setTotalInvested ] = useState(0);
   const [ transactionApproved, setTransactionApproved ] = useState(false);
-  const [ loading, setLoading ] = useState(false);
+  const [ loadingApprove, setLoadingApprove ] = useState(false);
+  const [ loadingInvest, setLoadingInvest ] = useState(false);
   
   useEffect(() => {
     if (fetcher.data?.success) {
@@ -105,7 +109,7 @@ const ConfirmModal = ({
 
   const onApproveInvest = async (walletId) => {
     if (walletId) {
-      setLoading(true);
+      setLoadingApprove(true);
       // Todo: on success, set transactionApproved to true
       try {
         await approve(walletId, totalInvested).then(async (tx) => {
@@ -114,13 +118,13 @@ const ConfirmModal = ({
     
           const transactionHash = await tx.getHash();
           
-          const receipt = kit.web3.eth.getTransactionReceipt(transactionHash);
+          const receipt = await kit.web3.eth.getTransactionReceipt(transactionHash);
           console.log('recepit', receipt);
         });
       } catch(e) {
         console.error(e);
       }
-      setLoading(false);
+      setLoadingApprove(false);
     } else {
       connect().catch((e) => console.log((e as Error).message));
     }
@@ -128,38 +132,44 @@ const ConfirmModal = ({
 
   const onInvest = async (walletId) => {
     if (walletId) {
-      // Deposit assets on vault and receive vault tokens
-      // Todo: separate approve from deposit
-      const txDeposit = await deposit(totalInvested, walletId);
-      
-      const txHash = await txDeposit.getHash();
-      //! Todo: Change on mainnet
-      setTransactionUrl(`https://alfajores.celoscan.io/tx/${txHash}`);
-
-      // Todo: validate if blockchain transaction was successful
-
-      // Create investment on db
-      const data = new FormData();
-      data.append("farmId", farm.id.toString());
-      data.append("investedSlots", investSlots.toString());
-      data.append(
-        "json",
-        JSON.stringify({
-          farmName: farm.name,
-          yieldEarned: 0,
-          dateInvested: new Date().toISOString(),
-          investedAmount: totalInvested,
-          APY: averageAPY,
-          status: "active",
-          slots: investSlots,
-          walletId,
-        })
-      );
-
-      await fetcher.submit(data, {
-        method: "post",
-        action: "/investments/new",
-      });
+      setLoadingInvest(true);
+      try {
+        // Deposit assets on vault and receive vault tokens
+        // Todo: separate approve from deposit
+        const txDeposit = await deposit(totalInvested, walletId);
+        
+        const txHash = await txDeposit.getHash();
+        //! Todo: Change to mainnet on prod
+        setTransactionUrl(`https://alfajores.celoscan.io/tx/${txHash}`);
+  
+        // Todo: validate if blockchain transaction was successful
+  
+        // Create investment on db
+        const data = new FormData();
+        data.append("farmId", farm.id.toString());
+        data.append("investedSlots", investSlots.toString());
+        data.append(
+          "json",
+          JSON.stringify({
+            farmName: farm.name,
+            yieldEarned: 0,
+            dateInvested: new Date().toISOString(),
+            investedAmount: totalInvested,
+            APY: averageAPY,
+            status: "active",
+            slots: investSlots,
+            walletId,
+          })
+        );
+  
+        await fetcher.submit(data, {
+          method: "post",
+          action: "/investments/new",
+        });
+      } catch(e) {
+        console.error(e);
+      }
+      setLoadingInvest(false);
     } else {
       connect().catch((e) => console.log((e as Error).message));
     }
@@ -258,16 +268,17 @@ const ConfirmModal = ({
         </Group>
         <Space h="xl" />
 
-        <Group position="center" grow>
+        <Group position="center" grow className={classes.buttonsContainer}>
           <TooltipButton
             radius="sm"
             onClick={() => onApproveInvest(walletId)}
             variant="filled"
             fullWidth
-            disabled={loading}
             sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
-            disabledtooltip="Please wait for transaction to finish"
+            disabled={!walletId}
+            disabledtooltip="Please connect your wallet first"
             color="blue"
+            loading={loadingApprove}
           >
             Approve
           </TooltipButton>
@@ -276,10 +287,10 @@ const ConfirmModal = ({
             onClick={() => onInvest(walletId)}
             variant="filled"
             fullWidth
-            disabled={!transactionApproved}
             sx={{ "&[data-disabled]": { pointerEvents: "all" } }}
-            disabledtooltip="Please approve transaction first"
-            loading={loading}
+            disabled={!walletId || !transactionApproved}
+            disabledtooltip={!walletId ? "Please connect your wallet first" : "Please approve transaction first"}
+            loading={loadingInvest}
           >
             Invest
           </TooltipButton>
