@@ -1,6 +1,4 @@
-import { useState, useEffect } from "react";
-import { useCelo } from "@celo/react-celo";
-
+import { useState } from "react";
 import {
   Card,
   Image,
@@ -19,7 +17,6 @@ import SuccessModal from "./SuccessModal";
 import TooltipButton from "./TooltipButton";
 import lisbonConceptFarm from "~/assets/lisbon_concept_farm.jpg";
 import type { Farm } from "~/types/Farm";
-import { deposit } from "../../models/tokenizedVault.contract";
 
 const useStyles = createStyles((theme) => ({
   card: {

@@ -24,7 +24,7 @@ export default function FarmRoute() {
     <>
       <Header />
       <Container size="lg" my="md">
-        <Grid gutter={20}>
+        <Grid gutter={20} justify="center">
           {data.farms.map((farm: Farm) => (
             <Grid.Col xs={6} sm={4} key={farm.id}>
               <FarmCard farm={farm} walletId={address} />
