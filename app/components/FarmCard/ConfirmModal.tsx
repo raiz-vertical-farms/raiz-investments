@@ -17,7 +17,7 @@ import { useMediaQuery } from "@mantine/hooks";
 import TooltipButton from "./TooltipButton";
 import type { Farm } from "~/types/Farm";
 
-import { approve, deposit, kit, allowance } from "~/models/tokenizedVault.celo";
+import { approve, deposit, kit, assetAllowance } from "~/models/tokenizedVault.celo";
 
 const useStyles = createStyles((theme) => ({
   bigLabel: {
@@ -82,11 +82,12 @@ const ConfirmModal = ({
     if (opened) {
       // Todo: check allowance approved for vault contract to spend for user from blockchain
       const checkTransactionApproved = () => {
+        console.log('entrados')
         try {
-          const fetchAllowance = async () => await allowance(walletId);
+          const fetchAllowance = async () => await assetAllowance(walletId);
           const allowance = fetchAllowance();
-          console.log('mi allowance', allowance)
-          const allowanceNum = kit.web3.utils.fromWei(allowance, "ether");
+          console.log('mi allowance', allowance);
+          const allowanceNum = kit.web3.utils.fromWei(allowance.toString(), "ether");
           console.log('mi allowance num', allowanceNum)
           
           setTransactionApproved(totalInvested <= Number(allowanceNum));
